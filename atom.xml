@@ -4,11 +4,11 @@
   <title><![CDATA[Decimal Blue Note]]></title>
   <link href="http://fukuishere.github.com/atom.xml" rel="self"/>
   <link href="http://fukuishere.github.com/"/>
-  <updated>2013-03-23T00:35:23+09:00</updated>
+  <updated>2013-03-23T01:17:52+09:00</updated>
   <id>http://fukuishere.github.com/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
-    
+    <email><![CDATA[decimal.blue.note@gmail.com]]></email>
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
