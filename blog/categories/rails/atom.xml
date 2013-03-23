@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Ruby | Decimal Blue Note]]></title>
-  <link href="http://fukuishere.github.com/blog/categories/ruby/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Rails | Decimal Blue Note]]></title>
+  <link href="http://fukuishere.github.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://fukuishere.github.com/"/>
   <updated>2013-03-23T21:32:30+09:00</updated>
   <id>http://fukuishere.github.com/</id>
@@ -73,49 +73,6 @@ end
 <pre><code>irb(main):002:0&gt; Entry.create(:user_id=&gt;1, :title=&gt;"title", :content=&gt;"content").created_at.this_year?
 =&gt; true
 </code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[classに自前のattrメソッドを追加する]]></title>
-    <link href="http://fukuishere.github.com/blog/2013/03/23/meta-class-ext/"/>
-    <updated>2013-03-23T18:16:00+09:00</updated>
-    <id>http://fukuishere.github.com/blog/2013/03/23/meta-class-ext</id>
-    <content type="html"><![CDATA[<p>以下をTryしてみました。<br/>
-1.  自前でattr_sanmpleのように定義<br/>
-2.  指定された属性の名前で動的にメソッド生成</p>
-
-<p><code>ruby entry.rb
-class Entry &lt; ActiveRecord::Base
-  attr_sample :created_at
-</code></p>
-
-<p>Classクラスをオープンしてメソッドを定義。（本当はModuleの方が正しいのかな？）</p>
-
-<p>```ruby lib/class_ext.rb
-class Class
-  def attr_sample(*attrs)</p>
-
-<pre><code>attrs.each do |attr|
-  self.class_eval %Q{
-    define_method("#{attr}_this_year?") do
-      #{attr}.year == Date.today.year
-    end
-  }
-end
-</code></pre>
-
-<p>  end
-end
-```</p>
-
-<p>これでこんな感じに使えたりする。
-```ruby</p>
-
-<pre><code>Entry.new.created_at_this_year?
-</code></pre>
-
-<p>```</p>
 ]]></content>
   </entry>
   

@@ -9,9 +9,10 @@
   <meta name="author" content="fukuishhere">
 
   
-  <meta name="description" content="Ruby環境に不要なgemを削除したい。
-そんな時の手順です。
-基本的にはbundlerがあれば十分なのでそれ以外は入れないようにしたいですね。 初めのうちにやってしまう、うっかりミス。 $bundle exec rails new example &#8211;skip-bundleが抜けている &hellip;">
+  <meta name="description" content="やりたいこと。
+「モデルをcreateした作成日がいつか判定したい」 例えば、こんな感じ。 entry.created_at.this_year? めちゃくちゃハマったorz
+Datetimeを再オープンしてRspecも問題なく動作して問題なし！！
+でも、、、Rails &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -40,7 +41,7 @@
   <header role="banner"><hgroup>
   <h1><a href="/">Decimal Blue Note</a></h1>
   
-    <h2>エンジニアとしての一歩一歩を綴ります</h2>
+    <h2>Quality of Engineering Life</h2>
   
 </hgroup>
 
@@ -67,6 +68,182 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/03/23/meta-datetime-ext/">Datetime,ActiveSupport::TimeWithZoneクラスの拡張</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-23T18:45:00+09:00" pubdate data-updated="true">Mar 23<span>rd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li>やりたいこと。<br/>
+「モデルをcreateした作成日がいつか判定したい」</li>
+</ul>
+
+
+<p>例えば、こんな感じ。</p>
+
+<blockquote><p>entry.created_at.this_year?</p></blockquote>
+
+<p>めちゃくちゃハマったorz<br/>
+Datetimeを再オープンしてRspecも問題なく動作して問題なし！！<br/>
+でも、、、Rails consoleでundefind methodで怒られる。。</p>
+
+<ul>
+<li>結論<br/>
+「Datetimeの拡張ではない、ActiveSupport::TimeWithZoneの拡張が必要！！」</li>
+</ul>
+
+
+<p>created_atのクラスをrails consoleで確認。</p>
+
+<pre><code>irb(main):001:0* Entry.create(:user_id=&gt;1, :title=&gt;"title", :content=&gt;"content").created_at.class
+=&gt; ActiveSupport::TimeWithZone
+</code></pre>
+
+<p>ということで、拡張用のモジュールを作成。</p>
+
+<figure class='code'><figcaption><span>lib/class_ext.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">DateTimeExt</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">this_year?</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">year</span> <span class="o">==</span> <span class="no">Date</span><span class="o">.</span><span class="n">today</span><span class="o">.</span><span class="n">year</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>そして、libs.rbを作成してMix-in。<br/>
+（名前は特になんでもOK）</p>
+
+<figure class='code'><figcaption><span>config/initializers/libs.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;core_ext&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="ss">ActiveSupport</span><span class="p">:</span><span class="ss">:TimeWithZone</span><span class="o">.</span><span class="n">class_eval</span> <span class="k">do</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">DateTimeExt</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>rails consoleで確認。</p>
+
+<pre><code>irb(main):002:0&gt; Entry.create(:user_id=&gt;1, :title=&gt;"title", :content=&gt;"content").created_at.this_year?
+=&gt; true
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/03/23/meta-class-ext/">Classに自前のattrメソッドを追加する</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-23T18:16:00+09:00" pubdate data-updated="true">Mar 23<span>rd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>以下をTryしてみました。<br/>
+1.  自前でattr_sanmpleのように定義<br/>
+2.  指定された属性の名前で動的にメソッド生成</p>
+
+<figure class='code'><figcaption><span>entry.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Entry</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="n">attr_sample</span> <span class="ss">:created_at</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Classクラスをオープンしてメソッドを定義。（本当はModuleの方が正しいのかな？）</p>
+
+<figure class='code'><figcaption><span>lib/class_ext.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Class</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">attr_sample</span><span class="p">(</span><span class="o">*</span><span class="n">attrs</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">attrs</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="kp">attr</span><span class="o">|</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">class_eval</span> <span class="sx">%Q{</span>
+</span><span class='line'><span class="sx">        define_method(&quot;</span><span class="si">#{</span><span class="kp">attr</span><span class="si">}</span><span class="sx">_this_year?&quot;) do</span>
+</span><span class='line'><span class="sx">          </span><span class="si">#{</span><span class="kp">attr</span><span class="si">}</span><span class="sx">.year == Date.today.year</span>
+</span><span class='line'><span class="sx">        end</span>
+</span><span class='line'><span class="sx">      }</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これでこんな感じに使えたりする。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Entry</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">created_at_this_year?</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -121,6 +298,11 @@
 
 <pre><code>$rbenv exec gem install bundler
 $rbenv rehash
+</code></pre>
+
+<p>gemの確認</p>
+
+<pre><code>$rbenv exec gem list
 </code></pre>
 
 <hr />
@@ -248,7 +430,8 @@ RubyGems 2.0.3 installed
 <a href="http://www.sankitch.me/blog/2012/05/05/build-octopress-on-github-dropbox/">Octopress + Github Pages + Dropbox でブログを構築</a><br/>
 まだ試してないけど役立ちそうなサイト<br/>
 <a href="http://k-mats.github.com/blog/2013/03/04/blog-on-gibhub-2/">デザインや画像について</a><br/>
-<a href="http://tokkonopapa.github.com/blog/2011/12/30/octopress-on-github-and-bitbucket/">運用管理について</a></p></blockquote>
+<a href="http://tokkonopapa.github.com/blog/2011/12/30/octopress-on-github-and-bitbucket/">運用管理について</a><br/>
+<a href="http://www.miukoba.net/blog/2013/01/05/start-octopress/">テーマの変更、faviconの変更、コメント欄の追加</a></p></blockquote>
 
 <hr />
 
@@ -358,6 +541,14 @@ Key: (example)ssh-rsa AA&#8230;.</p>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/03/23/meta-datetime-ext/">Datetime,ActiveSupport::TimeWithZoneクラスの拡張</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/03/23/meta-class-ext/">classに自前のattrメソッドを追加する</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/03/23/gem-unistall/">Ruby環境のgemをuninstall</a>

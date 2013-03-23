@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: rbenv | Decimal Blue Note]]></title>
+  <link href="http://fukuishere.github.com/blog/categories/rbenv/atom.xml" rel="self"/>
+  <link href="http://fukuishere.github.com/"/>
+  <updated>2013-03-23T21:32:30+09:00</updated>
+  <id>http://fukuishere.github.com/</id>
+  <author>
+    <name><![CDATA[fukuishhere]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby環境のgemをuninstall]]></title>
+    <link href="http://fukuishere.github.com/blog/2013/03/23/gem-unistall/"/>
+    <updated>2013-03-23T16:06:00+09:00</updated>
+    <id>http://fukuishere.github.com/blog/2013/03/23/gem-unistall</id>
+    <content type="html"><![CDATA[<p>Ruby環境に不要なgemを削除したい。<br/>
+そんな時の手順です。<br/>
+基本的にはbundlerがあれば十分なのでそれ以外は入れないようにしたいですね。</p>
+
+<p>初めのうちにやってしまう、うっかりミス。</p>
+
+<pre><code>$bundle exec rails new example
+</code></pre>
+
+<p>--skip-bundleが抜けている。。。
+そのためにRuby環境にgemがinstallされてしまうorz<br/>
+やっぱりこうしときたいですね。</p>
+
+<pre><code>$bundle exec rails new example --skip-bundle  
+</code></pre>
+
+<p>本題のRuby環境（rbenv環境）のgemのuninstallはコレ。</p>
+
+<pre><code>$rbenv exec gem list | awk '{print "rbenv exec gem uninstall " $1}' | sh -xv
+</code></pre>
+
+<p>そしてbundlerのみ再インストール。</p>
+
+<pre><code>$rbenv exec gem install bundler
+$rbenv rehash
+</code></pre>
+
+<p>gemの確認</p>
+
+<pre><code>$rbenv exec gem list
+</code></pre>
+
+<hr />
+
+<p>参考サイト
+<a href="http://qiita.com/items/a60886152a4c99ce1017">http://qiita.com/items/a60886152a4c99ce1017</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[rbenv環境でgemのupdateしてみた]]></title>
+    <link href="http://fukuishere.github.com/blog/2013/03/23/gem-update/"/>
+    <updated>2013-03-23T15:26:00+09:00</updated>
+    <id>http://fukuishere.github.com/blog/2013/03/23/gem-update</id>
+    <content type="html"><![CDATA[<p>Railsのバージョンアップのついでにgemも最新化してみることに。</p>
+
+<p>以下、サイトを参考にしました。
+<a href="http://nemoplus.hateblo.jp/entry/2013/01/11/042307">http://nemoplus.hateblo.jp/entry/2013/01/11/042307</a></p>
+
+<p>gemのバージョンを確認</p>
+
+<pre><code>VirtualBox:~$ gem -v
+1.8.23
+</code></pre>
+
+<p>gemのupdate</p>
+
+<pre><code>VirtualBox:~$ rbenv exec gem update --system
+Updating rubygems-update
+Fetching: rubygems-update-2.0.3.gem (100%)
+Successfully installed rubygems-update-2.0.3
+Installing RubyGems 2.0.3
+RubyGems 2.0.3 installed
+......
+</code></pre>
+
+<p>忘れずに</p>
+
+<pre><code>VirtualBox:~$ rbenv rehash
+</code></pre>
+
+<p>無事に最新化成功</p>
+
+<pre><code>VirtualBox:~$ gem -v
+2.0.3
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>
