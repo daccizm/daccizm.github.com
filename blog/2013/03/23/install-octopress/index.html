@@ -108,14 +108,16 @@ Githubへの公開鍵登録 初歩的なハマりでしたorz 以下、サイト
 
 <p>以下、サイトを参考にしました。</p>
 
-<blockquote><p><a href="http://blog.glidenote.com/blog/2011/11/07/install-octopress-on-github/">GithubとOctopressでモダンな技術系ブログを作ってみる</a></p>
-
-<p><a href="http://www.sankitch.me/blog/2012/05/05/build-octopress-on-github-dropbox/">Octopress + Github Pages + Dropbox でブログを構築</a></p></blockquote>
+<blockquote><p><a href="http://blog.glidenote.com/blog/2011/11/07/install-octopress-on-github/">GithubとOctopressでモダンな技術系ブログを作ってみる</a><br/>
+<a href="http://www.sankitch.me/blog/2012/05/05/build-octopress-on-github-dropbox/">Octopress + Github Pages + Dropbox でブログを構築</a><br/>
+まだ試してないけど役立ちそうなサイト<br/>
+<a href="http://k-mats.github.com/blog/2013/03/04/blog-on-gibhub-2/">デザインや画像について</a><br/>
+<a href="http://tokkonopapa.github.com/blog/2011/12/30/octopress-on-github-and-bitbucket/">運用管理について</a></p></blockquote>
 
 <hr />
 
-<p>上記サイトと若干異なる点は、gemのインストールはvendor/bundleにインスコ。
-ローカルの環境をキレイに保ちたいからね。</p>
+<p>上記サイトと若干異なる点は、（恐らくただ省略されただけだが）<br/>
+gemのインストールはvendor/bundleにインスコ。</p>
 
 <pre><code>bundle install --path vendor/bundle
 </code></pre>
@@ -125,6 +127,35 @@ Githubへの公開鍵登録 初歩的なハマりでしたorz 以下、サイト
 <pre><code>bundle exec rake setup_github_pages
 bundle exec rake generate
 bundle exec rake deploy
+</code></pre>
+
+<hr />
+
+<p>新規記事の投稿</p>
+
+<pre><code>bundle exec rake new_post["new blog"]
+</code></pre>
+
+<p>markdown拡張子のファイルが以下に生成</p>
+
+<pre><code>source/_posts/2013-03-23-new-blog.markdown
+</code></pre>
+
+<p>ファイルを編集</p>
+
+<pre><code>---
+layout: post
+title: "new blog"
+date: 2013-03-23 10:17
+comments: true
+categories:
+---
+投稿する内容を書く
+</code></pre>
+
+<p>記事を書いたら後はデプロイ</p>
+
+<pre><code>bundle exec rake gen_deploy
 </code></pre>
 
 <hr />
@@ -219,6 +250,8 @@ Key: (example)ssh-rsa AA&#8230;.</p>
     <p class="meta">
       
       
+        <a class="basic-alignment right" href="/blog/2013/03/23/gem-update/" title="Next Post: rbenv環境でgemのupdateしてみた">rbenv環境でgemのupdateしてみた &raquo;</a>
+      
     </p>
   </footer>
 </article>
@@ -230,6 +263,14 @@ Key: (example)ssh-rsa AA&#8230;.</p>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/03/23/gem-unistall/">Ruby環境のgemをuninstall</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/03/23/gem-update/">rbenv環境でgemのupdateしてみた</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/03/23/install-octopress/">octopress + Github でブログを作ってみた</a>

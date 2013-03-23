@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Ruby | Decimal Blue Note]]></title>
+  <link href="http://fukuishere.github.com/blog/categories/ruby/atom.xml" rel="self"/>
+  <link href="http://fukuishere.github.com/"/>
+  <updated>2013-03-23T18:02:49+09:00</updated>
+  <id>http://fukuishere.github.com/</id>
+  <author>
+    <name><![CDATA[fukuishhere]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[rbenv環境でgemのupdateしてみた]]></title>
+    <link href="http://fukuishere.github.com/blog/2013/03/23/gem-update/"/>
+    <updated>2013-03-23T15:26:00+09:00</updated>
+    <id>http://fukuishere.github.com/blog/2013/03/23/gem-update</id>
+    <content type="html"><![CDATA[<p>Railsのバージョンアップのついでにgemも最新化してみることに。</p>
+
+<p>以下、サイトを参考にしました。
+<a href="http://nemoplus.hateblo.jp/entry/2013/01/11/042307">http://nemoplus.hateblo.jp/entry/2013/01/11/042307</a></p>
+
+<p>gemのバージョンを確認</p>
+
+<pre><code>VirtualBox:~$ gem -v
+1.8.23
+</code></pre>
+
+<p>gemのupdate</p>
+
+<pre><code>VirtualBox:~$ rbenv exec gem update --system
+Updating rubygems-update
+Fetching: rubygems-update-2.0.3.gem (100%)
+Successfully installed rubygems-update-2.0.3
+Installing RubyGems 2.0.3
+RubyGems 2.0.3 installed
+......
+</code></pre>
+
+<p>忘れずに</p>
+
+<pre><code>VirtualBox:~$ rbenv rehash
+</code></pre>
+
+<p>無事に最新化成功</p>
+
+<pre><code>VirtualBox:~$ gem -v
+2.0.3
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

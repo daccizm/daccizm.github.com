@@ -2,11 +2,19 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://fukuishere.github.com/blog/2013/03/23/install-octopress/</loc>
-        <lastmod>2013-03-23T15:00:39+09:00</lastmod>
+        <lastmod>2013-03-23T17:47:37+09:00</lastmod>
+    </url>
+    <url>
+        <loc>http://fukuishere.github.com/blog/2013/03/23/gem-update/</loc>
+        <lastmod>2013-03-23T15:40:49+09:00</lastmod>
+    </url>
+    <url>
+        <loc>http://fukuishere.github.com/blog/2013/03/23/gem-unistall/</loc>
+        <lastmod>2013-03-23T18:01:07+09:00</lastmod>
     </url>
     <url>
         <loc>http://fukuishere.github.com/</loc>
-        <lastmod>2013-03-23T15:00:39+09:00</lastmod>
+        <lastmod>2013-03-23T18:01:07+09:00</lastmod>
     </url>
     <url>
         <loc>http://fukuishere.github.com/robots.txt</loc>
@@ -14,6 +22,6 @@
     </url>
     <url>
         <loc>http://fukuishere.github.com/blog/archives/</loc>
-        <lastmod>2013-03-23T15:00:39+09:00</lastmod>
+        <lastmod>2013-03-23T18:01:07+09:00</lastmod>
     </url>
 </urlset>

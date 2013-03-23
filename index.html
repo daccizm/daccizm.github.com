@@ -9,9 +9,9 @@
   <meta name="author" content="fukuishhere">
 
   
-  <meta name="description" content="「GithubでBlog」という直感的好奇心から早速トライしてみることに。 導入難易度はEasyです。
-しかし、ハマった点がいくつか。 Githubのメールアドレスを確認していなかった
-Githubへの公開鍵登録 初歩的なハマりでしたorz 以下、サイトを参考にしました。 &hellip;">
+  <meta name="description" content="Ruby環境に不要なgemを削除したい。
+そんな時の手順です。
+基本的にはbundlerがあれば十分なのでそれ以外は入れないようにしたいですね。 初めのうちにやってしまう、うっかりミス。 $bundle exec rails new example &#8211;skip-bundleが抜けている &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -73,6 +73,139 @@ Githubへの公開鍵登録 初歩的なハマりでしたorz 以下、サイト
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2013/03/23/gem-unistall/">Ruby環境のgemをuninstall</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-23T16:06:00+09:00" pubdate data-updated="true">Mar 23<span>rd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Ruby環境に不要なgemを削除したい。<br/>
+そんな時の手順です。<br/>
+基本的にはbundlerがあれば十分なのでそれ以外は入れないようにしたいですね。</p>
+
+<p>初めのうちにやってしまう、うっかりミス。</p>
+
+<pre><code>$bundle exec rails new example
+</code></pre>
+
+<p>&#8211;skip-bundleが抜けている。。。
+そのためにRuby環境にgemがinstallされてしまうorz<br/>
+やっぱりこうしときたいですね。</p>
+
+<pre><code>$bundle exec rails new example --skip-bundle  
+</code></pre>
+
+<p>本題のRuby環境（rbenv環境）のgemのuninstallはコレ。</p>
+
+<pre><code>$rbenv exec gem list | awk '{print "rbenv exec gem uninstall " $1}' | sh -xv
+</code></pre>
+
+<p>そしてbundlerのみ再インストール。</p>
+
+<pre><code>$rbenv exec gem install bundler
+$rbenv rehash
+</code></pre>
+
+<hr />
+
+<p>参考サイト
+<a href="http://qiita.com/items/a60886152a4c99ce1017">http://qiita.com/items/a60886152a4c99ce1017</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/03/23/gem-update/">Rbenv環境でgemのupdateしてみた</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-23T15:26:00+09:00" pubdate data-updated="true">Mar 23<span>rd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Railsのバージョンアップのついでにgemも最新化してみることに。</p>
+
+<p>以下、サイトを参考にしました。
+<a href="http://nemoplus.hateblo.jp/entry/2013/01/11/042307">http://nemoplus.hateblo.jp/entry/2013/01/11/042307</a></p>
+
+<p>gemのバージョンを確認</p>
+
+<pre><code>VirtualBox:~$ gem -v
+1.8.23
+</code></pre>
+
+<p>gemのupdate</p>
+
+<pre><code>VirtualBox:~$ rbenv exec gem update --system
+Updating rubygems-update
+Fetching: rubygems-update-2.0.3.gem (100%)
+Successfully installed rubygems-update-2.0.3
+Installing RubyGems 2.0.3
+RubyGems 2.0.3 installed
+......
+</code></pre>
+
+<p>忘れずに</p>
+
+<pre><code>VirtualBox:~$ rbenv rehash
+</code></pre>
+
+<p>無事に最新化成功</p>
+
+<pre><code>VirtualBox:~$ gem -v
+2.0.3
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2013/03/23/install-octopress/">Octopress + Github でブログを作ってみた</a></h1>
     
     
@@ -111,14 +244,16 @@ Githubへの公開鍵登録 初歩的なハマりでしたorz 以下、サイト
 
 <p>以下、サイトを参考にしました。</p>
 
-<blockquote><p><a href="http://blog.glidenote.com/blog/2011/11/07/install-octopress-on-github/">GithubとOctopressでモダンな技術系ブログを作ってみる</a></p>
-
-<p><a href="http://www.sankitch.me/blog/2012/05/05/build-octopress-on-github-dropbox/">Octopress + Github Pages + Dropbox でブログを構築</a></p></blockquote>
+<blockquote><p><a href="http://blog.glidenote.com/blog/2011/11/07/install-octopress-on-github/">GithubとOctopressでモダンな技術系ブログを作ってみる</a><br/>
+<a href="http://www.sankitch.me/blog/2012/05/05/build-octopress-on-github-dropbox/">Octopress + Github Pages + Dropbox でブログを構築</a><br/>
+まだ試してないけど役立ちそうなサイト<br/>
+<a href="http://k-mats.github.com/blog/2013/03/04/blog-on-gibhub-2/">デザインや画像について</a><br/>
+<a href="http://tokkonopapa.github.com/blog/2011/12/30/octopress-on-github-and-bitbucket/">運用管理について</a></p></blockquote>
 
 <hr />
 
-<p>上記サイトと若干異なる点は、gemのインストールはvendor/bundleにインスコ。
-ローカルの環境をキレイに保ちたいからね。</p>
+<p>上記サイトと若干異なる点は、（恐らくただ省略されただけだが）<br/>
+gemのインストールはvendor/bundleにインスコ。</p>
 
 <pre><code>bundle install --path vendor/bundle
 </code></pre>
@@ -128,6 +263,35 @@ Githubへの公開鍵登録 初歩的なハマりでしたorz 以下、サイト
 <pre><code>bundle exec rake setup_github_pages
 bundle exec rake generate
 bundle exec rake deploy
+</code></pre>
+
+<hr />
+
+<p>新規記事の投稿</p>
+
+<pre><code>bundle exec rake new_post["new blog"]
+</code></pre>
+
+<p>markdown拡張子のファイルが以下に生成</p>
+
+<pre><code>source/_posts/2013-03-23-new-blog.markdown
+</code></pre>
+
+<p>ファイルを編集</p>
+
+<pre><code>---
+layout: post
+title: "new blog"
+date: 2013-03-23 10:17
+comments: true
+categories:
+---
+投稿する内容を書く
+</code></pre>
+
+<p>記事を書いたら後はデプロイ</p>
+
+<pre><code>bundle exec rake gen_deploy
 </code></pre>
 
 <hr />
@@ -194,6 +358,14 @@ Key: (example)ssh-rsa AA&#8230;.</p>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/03/23/gem-unistall/">Ruby環境のgemをuninstall</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/03/23/gem-update/">rbenv環境でgemのupdateしてみた</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/03/23/install-octopress/">octopress + Github でブログを作ってみた</a>
