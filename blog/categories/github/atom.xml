@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Decimal Blue Note]]></title>
-  <link href="http://fukuishere.github.com/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Github | Decimal Blue Note]]></title>
+  <link href="http://fukuishere.github.com/blog/categories/github/atom.xml" rel="self"/>
   <link href="http://fukuishere.github.com/"/>
   <updated>2013-03-23T15:06:42+09:00</updated>
   <id>http://fukuishere.github.com/</id>
@@ -97,7 +97,7 @@ https://github.com/contact</p></blockquote>
 <p><a href="https://github.com/settings/ssh">https://github.com/settings/ssh</a>
 から公開鍵を登録<br/>
 Title: (任意)<br/>
-Key: (example)ssh-rsa AA&#8230;.</p>
+Key: (example)ssh-rsa AA....</p>
 ]]></content>
   </entry>
   
