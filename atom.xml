@@ -4,7 +4,7 @@
   <title><![CDATA[Decimal Blue Note]]></title>
   <link href="http://fukuishere.github.com/atom.xml" rel="self"/>
   <link href="http://fukuishere.github.com/"/>
-  <updated>2013-03-23T21:32:30+09:00</updated>
+  <updated>2013-03-31T21:04:36+09:00</updated>
   <id>http://fukuishere.github.com/</id>
   <author>
     <name><![CDATA[fukuishhere]]></name>
@@ -12,6 +12,415 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Railsプロジェクト作成～Github～Herokuにデプロイ]]></title>
+    <link href="http://fukuishere.github.com/blog/2013/03/23/create-rails/"/>
+    <updated>2013-03-23T22:42:00+09:00</updated>
+    <id>http://fukuishere.github.com/blog/2013/03/23/create-rails</id>
+    <content type="html"><![CDATA[<p>個人的メモのため手順を残しておく</p>
+
+<p><strong>Step:1 Railsプロジェクト作成</strong><br/>
+<strong>Step:2 gemのインストール</strong>
+<strong>Step:3 MVCの作成</strong><br/>
+<strong>Step:4 deviseをgenerate</strong><br/>
+<strong>Step:5 bootstrapをgenerate</strong><br/>
+<strong>Step:6 DBを作成</strong><br/>
+<strong>Step:7 Railsを起動</strong><br/>
+<strong>Step:8 Herokuにデプロイ</strong><br/>
+<strong>Step:9 GithubにPush</strong></p>
+
+<hr />
+
+<p><strong>Step:1-1 Railsプロジェクト親階層に移動。</strong><br/>
+僕の環境ならRailsAppのディレクトリに各Railsプロジェクトを作成している。</p>
+
+<pre><code>$cd RailsApp
+</code></pre>
+
+<p><strong>Step:1-2 Gemfileを新規作成</strong><br/>
+※端末のグローバルな環境ではBundlerぐらいしかインストールしていない。<br/>
+railsコマンドを使いたいから暫定的にインスコ。</p>
+
+<figure class='code'><figcaption><span>Gemfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">source</span> <span class="s1">&#39;https://rubygems.org&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;rails&#39;</span><span class="p">,</span> <span class="s1">&#39;3.2.11&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Step:1-3 Railsをインストール</strong></p>
+
+<pre><code>$bundle install --path vendor/bundle
+</code></pre>
+
+<p><strong>Step:1-4 Railsプロジェクトを新規作成</strong><br/>
+herokuを利用するためpostgresqlをDBに指定。</p>
+
+<pre><code>$bundle exec rails new sample --skip-bundle -d postgresql
+</code></pre>
+
+<p><strong>Step:1-5 databese.ymlの編集</strong><br/>
+development, testのadapterを&#8221;sqlite3&#8221;にしておく。</p>
+
+<figure class='code'><figcaption><span>config/database.yml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="ss">development</span><span class="p">:</span>
+</span><span class='line'>  <span class="ss">adapter</span><span class="p">:</span> <span class="n">sqlite3</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">～省略～</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">test</span><span class="p">:</span>
+</span><span class='line'>  <span class="ss">adapter</span><span class="p">:</span> <span class="n">sqlite3</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Step:1-6 暫定で作成したRailsを削除</strong></p>
+
+<pre><code>$rm -f Gemfile
+$rm -f Gemfile.lock
+$rm -rf .bundle
+$rm -R vendor
+</code></pre>
+
+<p><strong>Step:1-7 Railsプロジェクトに移動</strong></p>
+
+<pre><code>$cd sample
+</code></pre>
+
+<p><strong>Step:1-8 .gitignoreを編集</strong><br/>
+gitの管理対象を外すため、以下を追加</p>
+
+<figure class='code'><figcaption><span>.gitignore</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="sr">/vendor/</span><span class="n">bundle</span>
+</span><span class='line'><span class="sr">/public/</span><span class="n">assets</span><span class="o">/*</span>
+</span><span class='line'><span class="sr">/db/s</span><span class="n">chema</span><span class="o">.</span><span class="n">rb</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<p><strong>Step:2-1 Gemfileの編集</strong></p>
+
+<ul>
+<li>devise</li>
+<li>rspec-rails</li>
+<li>factory_girl_rails</li>
+<li>twitter-bootstrap-rails</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>Gemfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># PostgreSQL</span>
+</span><span class='line'><span class="n">group</span> <span class="ss">:production</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;pg&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Sqlite3</span>
+</span><span class='line'><span class="c1"># assetsにするとherokuのdeploy時に怒られる</span>
+</span><span class='line'><span class="n">group</span> <span class="ss">:development</span><span class="p">,</span> <span class="ss">:test</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;sqlite3&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># ログイン管理</span>
+</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;devise&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># デザイン周りを簡単に</span>
+</span><span class='line'><span class="c1"># assetsで定義するとherokuで動かすとエラーになる</span>
+</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;twitter-bootstrap-rails&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">group</span> <span class="ss">:assets</span> <span class="k">do</span>
+</span><span class='line'>  <span class="c1"># RSpec</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;rspec-rails&#39;</span>
+</span><span class='line'>  <span class="c1"># RSpecと大親友</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;factory_girl_rails&#39;</span>
+</span><span class='line'>  <span class="c1"># twitter-bootstrap-railsインスコするときはこいつも一緒に</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;less-rails&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># 以下の行をコメント解除</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;therubyracer&#39;</span><span class="p">,</span> <span class="ss">:platform</span> <span class="o">=&gt;</span> <span class="ss">:ruby</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Step:2-2 gemのインストール</strong></p>
+
+<pre><code>$bundle install --path vendor/bundle --without production
+</code></pre>
+
+<hr />
+
+<p><strong>Step:3-1 単数形/複数形の対応を確認</strong></p>
+
+<figure class='code'><figcaption><span>config/initializers/inflections.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="ss">ActiveSupport</span><span class="p">:</span><span class="ss">:Inflector</span><span class="o">.</span><span class="n">inflections</span> <span class="k">do</span> <span class="o">|</span><span class="n">inflect</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">inflect</span><span class="o">.</span><span class="n">irregular</span> <span class="s1">&#39;person&#39;</span><span class="p">,</span> <span class="s1">&#39;people&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Step:3-2 必要なモデルをscaffoldで作成</strong></p>
+
+<p>※参考サイト<br/>
+<a href="http://alpha-netzilla.blogspot.jp/2011/11/rails-3.html">http://alpha-netzilla.blogspot.jp/2011/11/rails-3.html</a></p>
+
+<pre><code>$bundle exec rails g scaffold user name:string
+$bundle exec rails g scaffold book title:string price:integer
+$bundle exec rails g model users_book user:references book:references
+</code></pre>
+
+<p>※中間テーブルはModelだけで十分。<br/>
+※コマンド実行後にusers_booksテーブルが作成される。<br/>
+※Railsでは語尾にしか複数形の&#8217;s&#8217;をつけてくれないから、&#8217;user&#8217;は手動で&#8217;s&#8217;を付ける。<br/>
+※scaffoldの取り消し</p>
+
+<pre><code>$bundle exec rails destroy scaffold user
+</code></pre>
+
+<p><strong>Step:3-2 中間テーブルのマイグレーションファイルの編集</strong><br/>
+主キー列、created_at列、updated_at列が不要な中間テーブルの作成前には
+一部編集が必要である。<br/>
+主キーを無効化し、かつタイムスタンプ列を削除する。</p>
+
+<figure class='code'><figcaption><span>db/migrate/YYYYmmddHHMMSS_create_users_books.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">change</span>
+</span><span class='line'>  <span class="n">create_table</span> <span class="ss">:users_books</span><span class="p">,</span> <span class="ss">:id</span><span class="o">=&gt;</span><span class="kp">false</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">t</span><span class="o">.</span><span class="n">references</span> <span class="ss">:user</span>
+</span><span class='line'>    <span class="n">t</span><span class="o">.</span><span class="n">references</span> <span class="ss">:book</span>
+</span><span class='line'>    <span class="n">t</span><span class="o">.</span><span class="n">timestamps</span> <span class="err">←削除</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="n">add_index</span> <span class="ss">:users_books</span><span class="p">,</span> <span class="ss">:user_id</span>
+</span><span class='line'>  <span class="n">add_index</span> <span class="ss">:users_books</span><span class="p">,</span> <span class="ss">:book_id</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<p><strong>Step:4-1 deviseのインストール</strong></p>
+
+<p>※参考サイト
+<a href="http://d.hatena.ne.jp/ema25/20110806/1312624651">http://d.hatena.ne.jp/ema25/20110806/1312624651</a></p>
+
+<pre><code>$bundle exec rails g devise:install
+</code></pre>
+
+<p><strong>Step:4-2 deviseで使うMailの設定</strong><br/>
+deviseライブラリを通じて送られるメールに記載するurlについて。</p>
+
+<figure class='code'><figcaption><span>vi config/environments/development.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">config</span><span class="o">.</span><span class="n">action_mailer</span><span class="o">.</span><span class="n">default_url_options</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">:host</span> <span class="o">=&gt;</span> <span class="s1">&#39;localhost:3000&#39;</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Step:4-3 routes.rbの編集</strong></p>
+
+<figure class='code'><figcaption><span>config/routes.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">root</span> <span class="ss">:to</span> <span class="o">=&gt;</span> <span class="s2">&quot;welcome#index&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Step:4-4 rootパスのwelcome#indexを作成</strong></p>
+
+<pre><code>$ bundle exec rails g controller welcome index
+</code></pre>
+
+<p><strong>Step:4-5 デフォルトのページを削除</strong></p>
+
+<pre><code>$git rm public/index.html
+</code></pre>
+
+<p><strong>Step:4-6 deviseをuserモデルに適用</strong></p>
+
+<pre><code>$bundle exec rails g devise user
+</code></pre>
+
+<p><strong>Step:4-XX 補足</strong><br/>
+※notice,alertのメッセージ</p>
+
+<figure class='code'><figcaption><span>app/views/layouts/application.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="nb">p</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;notice&quot;</span><span class="o">&gt;&lt;</span><span class="sx">%= notice %&gt;&lt;/p&gt;</span>
+</span><span class='line'><span class="sx">&lt;p class=</span><span class="s2">&quot;alert&quot;</span><span class="o">&gt;&lt;%=</span> <span class="n">alert</span> <span class="sx">%&gt;&lt;/p&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>※ログイン、ログアウトのリンクを張る時はこんな感じ</p>
+
+<figure class='code'><figcaption><span>app/views/layouts/application.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">% if </span><span class="n">user_signed_in?</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">  &lt;%= current_user.name %&gt;</span><span class="err">さん</span> <span class="o">/</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="sx">%= link_to &quot;ログアウト&quot;, destroy_user_session_path, :method =</span><span class="o">&gt;</span> <span class="s1">&#39;delete&#39;</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">  &lt;%= link_to &quot;ユーザ情報の編集&quot;, edit_user_registration_path %&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sx">% else %&gt;</span>
+</span><span class='line'><span class="sx">  &lt;%= link_to &quot;ログイン&quot;, new_user_session_path %&gt;</span>
+</span><span class='line'>  <span class="o">&lt;%=</span> <span class="n">link_to</span> <span class="s2">&quot;登録&quot;</span><span class="p">,</span> <span class="n">new_user_registration_path</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">&lt;% end %&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<p><strong>Step:5-1 bootstrapのinstall</strong></p>
+
+<pre><code>$bundle exec rails g bootstrap:install
+</code></pre>
+
+<p><strong>Step:5-2 レイアウトを適用</strong></p>
+
+<p>※可変に設定&#8221;fluid&#8221;<br/>
+※「Overwrite ～ (enter &#8220;h&#8221; for help) [Ynaqdh]」と聞いてくるので、&#8221;Y&#8221;で上書きする。</p>
+
+<pre><code>$bundle exec rails g bootstrap:layout application ﬂuid
+</code></pre>
+
+<hr />
+
+<p><strong>Step:6-1 DB作成</strong></p>
+
+<pre><code>$bundle exec rake db:create
+$bundle exec rake db:migrate
+</code></pre>
+
+<hr />
+
+<p><strong>Step:7-1 Rails起動</strong></p>
+
+<pre><code>$bundle exec rails s
+</code></pre>
+
+<hr />
+
+<p><strong>Step:8-1 前準備</strong><br/>
+assetsが存在しない場合、コンパイルしなおしてくれるようにfalseからtrueに変更</p>
+
+<figure class='code'><figcaption><span>config/environments/production.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">config</span><span class="o">.</span><span class="n">assets</span><span class="o">.</span><span class="n">compile</span> <span class="o">=</span> <span class="kp">true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>deveise&amp;herokuを利用するとなることこれが必要。rake asset時に怒られる。</p>
+
+<figure class='code'><figcaption><span>config/application.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># use devise for heroku</span>
+</span><span class='line'><span class="n">config</span><span class="o">.</span><span class="n">assets</span><span class="o">.</span><span class="n">initialize_on_precompile</span> <span class="o">=</span> <span class="kp">false</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Step:8-2 Gemfileの編集</strong></p>
+
+<figure class='code'><figcaption><span>Gemfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;heroku&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Step:8-3 gemのinstall</strong></p>
+
+<pre><code>$bundle install --path vendor/bundle --without production
+</code></pre>
+
+<p><strong>Step:8-4 Herokuにログインできるか確認</strong></p>
+
+<pre><code>$bundle exec heroku login
+</code></pre>
+
+<p><strong>Step:8-5 Herokuにアプリ作成</strong><br/>
+※「&#8211;stack cedar」でherokuの最新の環境にデプロイできる<br/>
+※&#8221;appname&#8221;にURLのアプリ名部分を指定（省略可）</p>
+
+<pre><code>$bundle exec heroku create appname --stack cedar
+</code></pre>
+
+<p><strong>Step:8-6 GitのリモートリポジトリにHerokuが登録されているのを確認</strong></p>
+
+<pre><code>$git remote -v
+</code></pre>
+
+<p><strong>Step:8-7 HerokuにGitでデプロイ</strong></p>
+
+<pre><code>$git push heroku master
+</code></pre>
+
+<p><strong>Step:8-8 HerokuにDBを作成</strong></p>
+
+<pre><code>$bundle exec heroku run rake db:migrate
+</code></pre>
+
+<p><strong>Step:8-9 Herokuにデプロイしたアプリケーションを確認</strong></p>
+
+<pre><code>$bundle exec heroku open
+</code></pre>
+
+<hr />
+
+<p><strong>Step:9-1 Githubに新しいリポジトリを作成</strong><br/>
+<a href="https://github.com/">https://github.com/</a></p>
+
+<p><strong>Step:9-2 GithubにPush</strong></p>
+
+<pre><code>$git init
+$git add .
+$git commit -m "first commit"
+$git remote add origin git@github.com:username/sample.git
+$git push origin master
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Datetime,ActiveSupport::TimeWithZoneクラスの拡張]]></title>
