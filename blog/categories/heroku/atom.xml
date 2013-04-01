@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Heroku | Decimal Blue Note]]></title>
   <link href="http://fukuishere.github.com/blog/categories/heroku/atom.xml" rel="self"/>
   <link href="http://fukuishere.github.com/"/>
-  <updated>2013-03-31T21:05:27+09:00</updated>
+  <updated>2013-04-01T22:11:57+09:00</updated>
   <id>http://fukuishere.github.com/</id>
   <author>
     <name><![CDATA[fukuishhere]]></name>
@@ -21,7 +21,7 @@
     <content type="html"><![CDATA[<p>個人的メモのため手順を残しておく</p>
 
 <p><strong>Step:1 Railsプロジェクト作成</strong><br/>
-<strong>Step:2 gemのインストール</strong>
+<strong>Step:2 gemのインストール</strong><br/>
 <strong>Step:3 MVCの作成</strong><br/>
 <strong>Step:4 deviseをgenerate</strong><br/>
 <strong>Step:5 bootstrapをgenerate</strong><br/>
@@ -233,6 +233,11 @@ root :to =&gt; "welcome#index"
 <p><strong>Step:4-6 deviseをuserモデルに適用</strong></p>
 
 <pre><code>$bundle exec rails g devise user
+</code></pre>
+
+<p><strong>Step:4-7 ビューをカスタマイズ</strong></p>
+
+<pre><code>$bundle exec rails g devise:views
 </code></pre>
 
 <p><strong>Step:4-XX 補足</strong><br/>
