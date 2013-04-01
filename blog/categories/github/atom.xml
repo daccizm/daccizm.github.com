@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Github | Decimal Blue Note]]></title>
   <link href="http://fukuishere.github.com/blog/categories/github/atom.xml" rel="self"/>
   <link href="http://fukuishere.github.com/"/>
-  <updated>2013-04-01T22:11:57+09:00</updated>
+  <updated>2013-04-02T00:26:49+09:00</updated>
   <id>http://fukuishere.github.com/</id>
   <author>
     <name><![CDATA[fukuishhere]]></name>
@@ -265,12 +265,16 @@ root :to =&gt; "welcome#index"
 **Step:5-1 bootstrapのinstall**  
     $bundle exec rails g bootstrap:install
 
-**Step:5-2 レイアウトを適用**  
+**Step:5-2 レイアウトを適用 1**  
 
 ※可変に設定"fluid"  
 ※「Overwrite ～ (enter "h" for help) [Ynaqdh]」と聞いてくるので、"Y"で上書きする。
 
     $bundle exec rails g bootstrap:layout application ﬂuid
+
+**Step:5-3 レイアウトを適用 2**  
+
+    $bundle exec rails g bootstrap:themed users -f
 
 - - -
 
