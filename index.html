@@ -241,7 +241,8 @@ skip_before_filter :authenticate_user!</p></blockquote>
 <strong>Step:9 GithubにPush</strong></p>
 
 <p><em>(追記)</em><br/>
-<strong>タイムゾーンの設定</strong></p>
+<strong>タイムゾーンの設定</strong><br/>
+<strong>GoogleAnalitycs</strong></p>
 
 <hr />
 
@@ -664,6 +665,41 @@ $git push origin master
 
 <p>$bundle exec heroku config:add TZ=Asia/Tokyo</p></li>
 </ul>
+
+
+<hr />
+
+<p><strong>GoogleAnalitycs</strong><br/>
+<a href="http://masalib.hatenablog.com/entry/2012/08/10/013416">http://masalib.hatenablog.com/entry/2012/08/10/013416</a></p>
+
+<p>1   gemを追加 &amp; install。</p>
+
+<figure class='code'><figcaption><span>Gemfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;google-analytics-rails&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<pre><code>$bundle install --path vendor/bundle --without production
+</code></pre>
+
+<p>2   本番の設定ファイルにトラッキングIDを追加。<br/>
+事前にGoogleAnaliticsからトラッキングIDを取得しておくこと。簡単に取得出来るから無問題。</p>
+
+<figure class='code'><figcaption><span>config/environments/production.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">GA</span><span class="o">.</span><span class="n">tracker</span> <span class="o">=</span> <span class="s2">&quot;UA-xxxxxx-x&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>3   Viewの修正。<br/>
+head内に1行追加するだけでOK！</p>
+
+<figure class='code'><figcaption><span>app/views/layout/application.html.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">%= csrf_meta_tags %&gt;</span>
+</span><span class='line'><span class="sx">&lt;%# ココに追加↓ %&gt;</span>
+</span><span class='line'><span class="sx">&lt;%=</span> <span class="n">analytics_init</span> <span class="k">if</span> <span class="no">Rails</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">production?</span> <span class="o">%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
 
 </div>
   

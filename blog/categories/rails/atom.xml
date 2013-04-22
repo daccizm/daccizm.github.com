@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Rails | Decimal Blue Note]]></title>
   <link href="http://fukuishere.github.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://fukuishere.github.com/"/>
-  <updated>2013-04-22T22:12:57+09:00</updated>
+  <updated>2013-04-22T22:26:53+09:00</updated>
   <id>http://fukuishere.github.com/</id>
   <author>
     <name><![CDATA[fukuishhere]]></name>
@@ -126,7 +126,8 @@ skip_before_filter :authenticate_user!</p></blockquote>
 <strong>Step:9 GithubにPush</strong></p>
 
 <p><em>(追記)</em><br/>
-<strong>タイムゾーンの設定</strong></p>
+<strong>タイムゾーンの設定</strong><br/>
+<strong>GoogleAnalitycs</strong></p>
 
 <hr />
 
@@ -454,6 +455,35 @@ config.active_record.default_timezone = :local
 +   Herokuの設定  
 
     $bundle exec heroku config:add TZ=Asia/Tokyo
+
+- - -
+
+**GoogleAnalitycs**  
+[http://masalib.hatenablog.com/entry/2012/08/10/013416](http://masalib.hatenablog.com/entry/2012/08/10/013416)
+
+1   gemを追加 & install。  
+```ruby Gemfile
+gem 'google-analytics-rails'
+```
+
+    $bundle install --path vendor/bundle --without production
+
+2   本番の設定ファイルにトラッキングIDを追加。  
+事前にGoogleAnaliticsからトラッキングIDを取得しておくこと。簡単に取得出来るから無問題。
+
+```ruby config/environments/production.rb
+GA.tracker = "UA-xxxxxx-x"
+```
+
+3   Viewの修正。  
+head内に1行追加するだけでOK！
+
+
+```ruby app/views/layout/application.html.erb
+    <%= csrf_meta_tags %>
+    <%# ココに追加↓ %>
+    <%= analytics_init if Rails.env.production? %>
+```
 
 ]]></content>
   </entry>
