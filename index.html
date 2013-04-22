@@ -9,13 +9,8 @@
   <meta name="author" content="fukuishhere">
 
   
-  <meta name="description" content="個人的メモのため手順を残しておく Step:1 Railsプロジェクト作成
-Step:2 gemのインストール
-Step:3 MVCの作成
-Step:4 deviseをgenerate
-Step:5 bootstrapをgenerate
-Step:6 DBを作成
-Step:7 Railsを起動 &hellip;">
+  <meta name="description" content="DeviseでE-Mailを使わない migrateで&#8221;email&#8221;のカラムを消してみる。
+理由は分からないけど上手くいかなかった。orz ということで、emailをただのカラムとして再定義してみる。 コレは消してもOK。 :null => false, :default &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +72,139 @@ Step:7 Railsを起動 &hellip;">
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2013/04/22/tips-devise/">DeviseのTips</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-22T21:21:00+09:00" pubdate data-updated="true">2013/04/22</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><hr />
+
+<ul>
+<li>DeviseでE-Mailを使わない</li>
+</ul>
+
+
+<p>migrateで&#8221;email&#8221;のカラムを消してみる。<br/>
+理由は分からないけど上手くいかなかった。orz</p>
+
+<p>ということで、emailをただのカラムとして再定義してみる。</p>
+
+<p>コレは消してもOK。</p>
+
+<blockquote><p>:null => false, :default => &#8220;&#8221;</p></blockquote>
+
+<p>コレも消してもOK。</p>
+
+<blockquote><p>add index :users, :email, :unique => true</p></blockquote>
+
+<p>後はModelにメソッドをオーバーライド。</p>
+
+<figure class='code'><figcaption><span>user.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">email_required?</span>
+</span><span class='line'>  <span class="kp">false</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>emailの代わりのカラムを指定（ex: account）</p>
+
+<blockquote><p>add index :users, :account, :unique => true</p></blockquote>
+
+<p>仕上げにdevise.rbを変更。</p>
+
+<figure class='code'><figcaption><span>config/initializers/devise.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="c1"># コメントを解除してaccountに変更</span>
+</span><span class='line'>  <span class="n">config</span><span class="o">.</span><span class="n">authentication_keys</span> <span class="o">=</span> <span class="o">[</span> <span class="ss">:account</span> <span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># 大文字小文字を区別させない。登録時に問答無用で小文字で登録される。</span>
+</span><span class='line'>  <span class="n">config</span><span class="o">.</span><span class="n">case_insensitive_keys</span> <span class="o">=</span> <span class="o">[</span> <span class="ss">:account</span> <span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># コメント見る限り余白を取り除くものだと。。思ふ。。</span>
+</span><span class='line'>  <span class="n">config</span><span class="o">.</span><span class="n">strip_whitespace_keys</span> <span class="o">=</span> <span class="o">[</span> <span class="ss">:account</span> <span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これがemailを使わないdeviseのやり方。。だと思う！</p>
+
+<hr />
+
+<ul>
+<li>Deviseによるユーザー認証機能の日本語化</li>
+</ul>
+
+
+<p>以下、サイトを参考にしました。
+<a href="http://www.oiax.jp/rails/rails3/i18n_and_devise1.html">http://www.oiax.jp/rails/rails3/i18n_and_devise1.html</a></p>
+
+<p>これ忘れずに！</p>
+
+<blockquote><p>config.i18n.default_locale = :ja</p></blockquote>
+
+<hr />
+
+<ul>
+<li>Deviseの認証フィルタリング</li>
+</ul>
+
+
+<p>以下、サイトを参考にしました。
+<a href="http://www.slideshare.net/fukajun/minamirbdevise">http://www.slideshare.net/fukajun/minamirbdevise</a></p>
+
+<p>なんてことはない話ですね。</p>
+
+<blockquote><p>before_filter :authenticate_user!<br/>
+skip_before_filter :authenticate_user!</p></blockquote>
+
+<hr />
+
+<ul>
+<li>Deviseのsignin,signoutのrouteの変え方</li>
+</ul>
+
+
+<p>以下、サイトを参考にしました。
+<a href="https://github.com/plataformatec/devise/wiki/How-To:-Change-the-default-sign_in-and-sign_out-routes">https://github.com/plataformatec/devise/wiki/How-To:-Change-the-default-sign_in-and-sign_out-routes</a></p>
+
+<p>まだ試してないけど、そのうちやってみようかな。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2013/03/23/create-rails/">Railsプロジェクト作成～Github～Herokuにデプロイ</a></h1>
     
     
@@ -111,6 +239,9 @@ Step:7 Railsを起動 &hellip;">
 <strong>Step:7 Railsを起動</strong><br/>
 <strong>Step:8 Herokuにデプロイ</strong><br/>
 <strong>Step:9 GithubにPush</strong></p>
+
+<p><em>(追記)</em><br/>
+<strong>タイムゾーンの設定</strong></p>
 
 <hr />
 
@@ -511,6 +642,29 @@ $git commit -m "first commit"
 $git remote add origin git@github.com:username/sample.git
 $git push origin master
 </code></pre>
+
+<hr />
+
+<p><strong>タイムゾーンの設定</strong></p>
+
+<ul>
+<li>Appの設定</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>config/application.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">config</span><span class="o">.</span><span class="n">time_zone</span> <span class="o">=</span> <span class="s1">&#39;Tokyo&#39;</span>
+</span><span class='line'><span class="n">config</span><span class="o">.</span><span class="n">active_record</span><span class="o">.</span><span class="n">default_timezone</span> <span class="o">=</span> <span class="ss">:local</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><p>Herokuの設定</p>
+
+<p>$bundle exec heroku config:add TZ=Asia/Tokyo</p></li>
+</ul>
+
 </div>
   
   
@@ -990,6 +1144,10 @@ Key: (example)ssh-rsa AA&#8230;.</p>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/04/22/tips-devise/">DeviseのTips</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/03/23/create-rails/">Railsプロジェクト作成～Github～Herokuにデプロイ</a>

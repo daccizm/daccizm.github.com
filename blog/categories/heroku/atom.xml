@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Heroku | Decimal Blue Note]]></title>
   <link href="http://fukuishere.github.com/blog/categories/heroku/atom.xml" rel="self"/>
   <link href="http://fukuishere.github.com/"/>
-  <updated>2013-04-02T00:26:49+09:00</updated>
+  <updated>2013-04-22T22:12:57+09:00</updated>
   <id>http://fukuishere.github.com/</id>
   <author>
     <name><![CDATA[fukuishhere]]></name>
@@ -29,6 +29,9 @@
 <strong>Step:7 Railsを起動</strong><br/>
 <strong>Step:8 Herokuにデプロイ</strong><br/>
 <strong>Step:9 GithubにPush</strong></p>
+
+<p><em>(追記)</em><br/>
+<strong>タイムゾーンの設定</strong></p>
 
 <hr />
 
@@ -341,6 +344,21 @@ gem 'heroku'
     $git commit -m "first commit"
     $git remote add origin git@github.com:username/sample.git
     $git push origin master
+
+- - -
+
+**タイムゾーンの設定**  
+
++   Appの設定
+
+```ruby config/application.rb
+config.time_zone = 'Tokyo'
+config.active_record.default_timezone = :local
+```
+
++   Herokuの設定  
+
+    $bundle exec heroku config:add TZ=Asia/Tokyo
 
 ]]></content>
   </entry>

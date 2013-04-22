@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Rails | Decimal Blue Note]]></title>
   <link href="http://fukuishere.github.com/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://fukuishere.github.com/"/>
-  <updated>2013-04-02T00:26:49+09:00</updated>
+  <updated>2013-04-22T22:12:57+09:00</updated>
   <id>http://fukuishere.github.com/</id>
   <author>
     <name><![CDATA[fukuishhere]]></name>
@@ -12,6 +12,101 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[DeviseのTips]]></title>
+    <link href="http://fukuishere.github.com/blog/2013/04/22/tips-devise/"/>
+    <updated>2013-04-22T21:21:00+09:00</updated>
+    <id>http://fukuishere.github.com/blog/2013/04/22/tips-devise</id>
+    <content type="html"><![CDATA[<hr />
+
+<ul>
+<li>DeviseでE-Mailを使わない</li>
+</ul>
+
+
+<p>migrateで"email"のカラムを消してみる。<br/>
+理由は分からないけど上手くいかなかった。orz</p>
+
+<p>ということで、emailをただのカラムとして再定義してみる。</p>
+
+<p>コレは消してもOK。</p>
+
+<blockquote><p>:null => false, :default => ""</p></blockquote>
+
+<p>コレも消してもOK。</p>
+
+<blockquote><p>add index :users, :email, :unique => true</p></blockquote>
+
+<p>後はModelにメソッドをオーバーライド。</p>
+
+<p><code>ruby user.rb
+def email_required?
+  false
+end
+</code></p>
+
+<p>emailの代わりのカラムを指定（ex: account）</p>
+
+<blockquote><p>add index :users, :account, :unique => true</p></blockquote>
+
+<p>仕上げにdevise.rbを変更。</p>
+
+<p>```ruby config/initializers/devise.rb
+  # コメントを解除してaccountに変更
+  config.authentication_keys = [ :account ]</p>
+
+<p>  # 大文字小文字を区別させない。登録時に問答無用で小文字で登録される。
+  config.case_insensitive_keys = [ :account ]</p>
+
+<p>  # コメント見る限り余白を取り除くものだと。。思ふ。。
+  config.strip_whitespace_keys = [ :account ]
+```</p>
+
+<p>これがemailを使わないdeviseのやり方。。だと思う！</p>
+
+<hr />
+
+<ul>
+<li>Deviseによるユーザー認証機能の日本語化</li>
+</ul>
+
+
+<p>以下、サイトを参考にしました。
+<a href="http://www.oiax.jp/rails/rails3/i18n_and_devise1.html">http://www.oiax.jp/rails/rails3/i18n_and_devise1.html</a></p>
+
+<p>これ忘れずに！</p>
+
+<blockquote><p>config.i18n.default_locale = :ja</p></blockquote>
+
+<hr />
+
+<ul>
+<li>Deviseの認証フィルタリング</li>
+</ul>
+
+
+<p>以下、サイトを参考にしました。
+<a href="http://www.slideshare.net/fukajun/minamirbdevise">http://www.slideshare.net/fukajun/minamirbdevise</a></p>
+
+<p>なんてことはない話ですね。</p>
+
+<blockquote><p>before_filter :authenticate_user!<br/>
+skip_before_filter :authenticate_user!</p></blockquote>
+
+<hr />
+
+<ul>
+<li>Deviseのsignin,signoutのrouteの変え方</li>
+</ul>
+
+
+<p>以下、サイトを参考にしました。
+<a href="https://github.com/plataformatec/devise/wiki/How-To:-Change-the-default-sign_in-and-sign_out-routes">https://github.com/plataformatec/devise/wiki/How-To:-Change-the-default-sign_in-and-sign_out-routes</a></p>
+
+<p>まだ試してないけど、そのうちやってみようかな。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Railsプロジェクト作成～Github～Herokuにデプロイ]]></title>
@@ -29,6 +124,9 @@
 <strong>Step:7 Railsを起動</strong><br/>
 <strong>Step:8 Herokuにデプロイ</strong><br/>
 <strong>Step:9 GithubにPush</strong></p>
+
+<p><em>(追記)</em><br/>
+<strong>タイムゾーンの設定</strong></p>
 
 <hr />
 
@@ -341,6 +439,21 @@ gem 'heroku'
     $git commit -m "first commit"
     $git remote add origin git@github.com:username/sample.git
     $git push origin master
+
+- - -
+
+**タイムゾーンの設定**  
+
++   Appの設定
+
+```ruby config/application.rb
+config.time_zone = 'Tokyo'
+config.active_record.default_timezone = :local
+```
+
++   Herokuの設定  
+
+    $bundle exec heroku config:add TZ=Asia/Tokyo
 
 ]]></content>
   </entry>

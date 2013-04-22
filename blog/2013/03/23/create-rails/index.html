@@ -109,6 +109,9 @@ Step:7 Railsを起動 &hellip;">
 <strong>Step:8 Herokuにデプロイ</strong><br/>
 <strong>Step:9 GithubにPush</strong></p>
 
+<p><em>(追記)</em><br/>
+<strong>タイムゾーンの設定</strong></p>
+
 <hr />
 
 <p><strong>Step:1-1 Railsプロジェクト親階層に移動。</strong><br/>
@@ -508,6 +511,29 @@ $git commit -m "first commit"
 $git remote add origin git@github.com:username/sample.git
 $git push origin master
 </code></pre>
+
+<hr />
+
+<p><strong>タイムゾーンの設定</strong></p>
+
+<ul>
+<li>Appの設定</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>config/application.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">config</span><span class="o">.</span><span class="n">time_zone</span> <span class="o">=</span> <span class="s1">&#39;Tokyo&#39;</span>
+</span><span class='line'><span class="n">config</span><span class="o">.</span><span class="n">active_record</span><span class="o">.</span><span class="n">default_timezone</span> <span class="o">=</span> <span class="ss">:local</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><p>Herokuの設定</p>
+
+<p>$bundle exec heroku config:add TZ=Asia/Tokyo</p></li>
+</ul>
+
 </div>
 
 
@@ -558,6 +584,8 @@ $git push origin master
         <a class="basic-alignment left" href="/blog/2013/03/23/meta-datetime-ext/" title="Previous Post: Datetime,ActiveSupport::TimeWithZoneクラスの拡張">&laquo; Datetime,ActiveSupport::TimeWithZoneクラスの拡張</a>
       
       
+        <a class="basic-alignment right" href="/blog/2013/04/22/tips-devise/" title="Next Post: DeviseのTips">DeviseのTips &raquo;</a>
+      
     </p>
   </footer>
 </article>
@@ -569,6 +597,10 @@ $git push origin master
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/04/22/tips-devise/">DeviseのTips</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/03/23/create-rails/">Railsプロジェクト作成～Github～Herokuにデプロイ</a>

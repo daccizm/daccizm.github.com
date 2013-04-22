@@ -22,11 +22,15 @@
     </url>
     <url>
         <loc>http://fukuishere.github.com/blog/2013/03/23/create-rails/</loc>
-        <lastmod>2013-04-02T00:26:24+09:00</lastmod>
+        <lastmod>2013-04-22T22:12:03+09:00</lastmod>
+    </url>
+    <url>
+        <loc>http://fukuishere.github.com/blog/2013/04/22/tips-devise/</loc>
+        <lastmod>2013-04-22T21:58:26+09:00</lastmod>
     </url>
     <url>
         <loc>http://fukuishere.github.com/</loc>
-        <lastmod>2013-04-02T00:26:24+09:00</lastmod>
+        <lastmod>2013-04-22T22:12:03+09:00</lastmod>
     </url>
     <url>
         <loc>http://fukuishere.github.com/robots.txt</loc>
@@ -34,6 +38,6 @@
     </url>
     <url>
         <loc>http://fukuishere.github.com/blog/archives/</loc>
-        <lastmod>2013-04-02T00:26:24+09:00</lastmod>
+        <lastmod>2013-04-22T22:12:03+09:00</lastmod>
     </url>
 </urlset>

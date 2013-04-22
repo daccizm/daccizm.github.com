@@ -5,14 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Datetime,ActiveSupport::TimeWithZoneクラスの拡張 - Decimal Blue Note</title>
+  <title>DeviseのTips - Decimal Blue Note</title>
   <meta name="author" content="fukuishhere">
 
   
-  <meta name="description" content="やりたいこと。
-「モデルをcreateした作成日がいつか判定したい」 例えば、こんな感じ。 entry.created_at.this_year? めちゃくちゃハマったorz
-Datetimeを再オープンしてRspecも問題なく動作して問題なし！！
-でも、、、Rails &hellip;">
+  <meta name="description" content="DeviseでE-Mailを使わない migrateで&#8221;email&#8221;のカラムを消してみる。
+理由は分からないけど上手くいかなかった。orz ということで、emailをただのカラムとして再定義してみる。 コレは消してもOK。 :null => false, :default &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,7 +19,7 @@ Datetimeを再オープンしてRspecも問題なく動作して問題なし！�
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://fukuishere.github.com/blog/2013/03/23/meta-datetime-ext">
+  <link rel="canonical" href="http://fukuishere.github.com/blog/2013/04/22/tips-devise">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Decimal Blue Note" type="application/atom+xml">
@@ -71,7 +69,7 @@ Datetimeを再オープンしてRspecも問題なく動作して問題なし！�
   
   <header>
     
-      <h1 class="entry-title">Datetime,ActiveSupport::TimeWithZoneクラスの拡張</h1>
+      <h1 class="entry-title">DeviseのTips</h1>
     
     
       <p class="meta">
@@ -87,75 +85,111 @@ Datetimeを再オープンしてRspecも問題なく動作して問題なし！�
   
 
 
-<time datetime="2013-03-23T18:45:00+09:00" pubdate data-updated="true">2013/03/23</time>
+<time datetime="2013-04-22T21:21:00+09:00" pubdate data-updated="true">2013/04/22</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><ul>
-<li>やりたいこと。<br/>
-「モデルをcreateした作成日がいつか判定したい」</li>
-</ul>
-
-
-<p>例えば、こんな感じ。</p>
-
-<blockquote><p>entry.created_at.this_year?</p></blockquote>
-
-<p>めちゃくちゃハマったorz<br/>
-Datetimeを再オープンしてRspecも問題なく動作して問題なし！！<br/>
-でも、、、Rails consoleでundefind methodで怒られる。。</p>
+<div class="entry-content"><hr />
 
 <ul>
-<li>結論<br/>
-「Datetimeの拡張ではない、ActiveSupport::TimeWithZoneの拡張が必要！！」</li>
+<li>DeviseでE-Mailを使わない</li>
 </ul>
 
 
-<p>created_atのクラスをrails consoleで確認。</p>
+<p>migrateで&#8221;email&#8221;のカラムを消してみる。<br/>
+理由は分からないけど上手くいかなかった。orz</p>
 
-<pre><code>irb(main):001:0* Entry.create(:user_id=&gt;1, :title=&gt;"title", :content=&gt;"content").created_at.class
-=&gt; ActiveSupport::TimeWithZone
-</code></pre>
+<p>ということで、emailをただのカラムとして再定義してみる。</p>
 
-<p>ということで、拡張用のモジュールを作成。</p>
+<p>コレは消してもOK。</p>
 
-<figure class='code'><figcaption><span>lib/class_ext.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<blockquote><p>:null => false, :default => &#8220;&#8221;</p></blockquote>
+
+<p>コレも消してもOK。</p>
+
+<blockquote><p>add index :users, :email, :unique => true</p></blockquote>
+
+<p>後はModelにメソッドをオーバーライド。</p>
+
+<figure class='code'><figcaption><span>user.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">DateTimeExt</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">this_year?</span>
-</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">year</span> <span class="o">==</span> <span class="no">Date</span><span class="o">.</span><span class="n">today</span><span class="o">.</span><span class="n">year</span>
-</span><span class='line'>  <span class="k">end</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">email_required?</span>
+</span><span class='line'>  <span class="kp">false</span>
 </span><span class='line'><span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>そして、libs.rbを作成してMix-in。<br/>
-（名前は特になんでもOK）</p>
+<p>emailの代わりのカラムを指定（ex: account）</p>
 
-<figure class='code'><figcaption><span>config/initializers/libs.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<blockquote><p>add index :users, :account, :unique => true</p></blockquote>
+
+<p>仕上げにdevise.rbを変更。</p>
+
+<figure class='code'><figcaption><span>config/initializers/devise.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;core_ext&#39;</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="c1"># コメントを解除してaccountに変更</span>
+</span><span class='line'>  <span class="n">config</span><span class="o">.</span><span class="n">authentication_keys</span> <span class="o">=</span> <span class="o">[</span> <span class="ss">:account</span> <span class="o">]</span>
 </span><span class='line'>
-</span><span class='line'><span class="ss">ActiveSupport</span><span class="p">:</span><span class="ss">:TimeWithZone</span><span class="o">.</span><span class="n">class_eval</span> <span class="k">do</span>
-</span><span class='line'>  <span class="kp">include</span> <span class="no">DateTimeExt</span>
-</span><span class='line'><span class="k">end</span>
+</span><span class='line'>  <span class="c1"># 大文字小文字を区別させない。登録時に問答無用で小文字で登録される。</span>
+</span><span class='line'>  <span class="n">config</span><span class="o">.</span><span class="n">case_insensitive_keys</span> <span class="o">=</span> <span class="o">[</span> <span class="ss">:account</span> <span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1"># コメント見る限り余白を取り除くものだと。。思ふ。。</span>
+</span><span class='line'>  <span class="n">config</span><span class="o">.</span><span class="n">strip_whitespace_keys</span> <span class="o">=</span> <span class="o">[</span> <span class="ss">:account</span> <span class="o">]</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>rails consoleで確認。</p>
+<p>これがemailを使わないdeviseのやり方。。だと思う！</p>
 
-<pre><code>irb(main):002:0&gt; Entry.create(:user_id=&gt;1, :title=&gt;"title", :content=&gt;"content").created_at.this_year?
-=&gt; true
-</code></pre>
+<hr />
+
+<ul>
+<li>Deviseによるユーザー認証機能の日本語化</li>
+</ul>
+
+
+<p>以下、サイトを参考にしました。
+<a href="http://www.oiax.jp/rails/rails3/i18n_and_devise1.html">http://www.oiax.jp/rails/rails3/i18n_and_devise1.html</a></p>
+
+<p>これ忘れずに！</p>
+
+<blockquote><p>config.i18n.default_locale = :ja</p></blockquote>
+
+<hr />
+
+<ul>
+<li>Deviseの認証フィルタリング</li>
+</ul>
+
+
+<p>以下、サイトを参考にしました。
+<a href="http://www.slideshare.net/fukajun/minamirbdevise">http://www.slideshare.net/fukajun/minamirbdevise</a></p>
+
+<p>なんてことはない話ですね。</p>
+
+<blockquote><p>before_filter :authenticate_user!<br/>
+skip_before_filter :authenticate_user!</p></blockquote>
+
+<hr />
+
+<ul>
+<li>Deviseのsignin,signoutのrouteの変え方</li>
+</ul>
+
+
+<p>以下、サイトを参考にしました。
+<a href="https://github.com/plataformatec/devise/wiki/How-To:-Change-the-default-sign_in-and-sign_out-routes">https://github.com/plataformatec/devise/wiki/How-To:-Change-the-default-sign_in-and-sign_out-routes</a></p>
+
+<p>まだ試してないけど、そのうちやってみようかな。</p>
 </div>
 
 
@@ -178,12 +212,12 @@ Datetimeを再オープンしてRspecも問題なく動作して問題なし！�
   
 
 
-<time datetime="2013-03-23T18:45:00+09:00" pubdate data-updated="true">2013/03/23</time>
+<time datetime="2013-04-22T21:21:00+09:00" pubdate data-updated="true">2013/04/22</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/rails/'>Rails</a>, <a class='category' href='/blog/categories/ruby/'>Ruby</a>
+    <a class='category' href='/blog/categories/rails/'>Rails</a>
   
 </span>
 
@@ -192,7 +226,7 @@ Datetimeを再オープンしてRspecも問題なく動作して問題なし！�
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://fukuishere.github.com/blog/2013/03/23/meta-datetime-ext/" data-via="" data-counturl="http://fukuishere.github.com/blog/2013/03/23/meta-datetime-ext/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://fukuishere.github.com/blog/2013/04/22/tips-devise/" data-via="" data-counturl="http://fukuishere.github.com/blog/2013/04/22/tips-devise/" >Tweet</a>
   
   
   
@@ -203,10 +237,8 @@ Datetimeを再オープンしてRspecも問題なく動作して問題なし！�
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/03/23/meta-class-ext/" title="Previous Post: classに自前のattrメソッドを追加する">&laquo; classに自前のattrメソッドを追加する</a>
+        <a class="basic-alignment left" href="/blog/2013/03/23/create-rails/" title="Previous Post: Railsプロジェクト作成～Github～Herokuにデプロイ">&laquo; Railsプロジェクト作成～Github～Herokuにデプロイ</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/03/23/create-rails/" title="Next Post: Railsプロジェクト作成～Github～Herokuにデプロイ">Railsプロジェクト作成～Github～Herokuにデプロイ &raquo;</a>
       
     </p>
   </footer>
