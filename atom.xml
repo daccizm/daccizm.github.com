@@ -4,7 +4,7 @@
   <title><![CDATA[Decimal Blue Note]]></title>
   <link href="http://fukuishere.github.com/atom.xml" rel="self"/>
   <link href="http://fukuishere.github.com/"/>
-  <updated>2013-04-25T23:42:26+09:00</updated>
+  <updated>2013-04-26T00:34:39+09:00</updated>
   <id>http://fukuishere.github.com/</id>
   <author>
     <name><![CDATA[fukuishhere]]></name>
@@ -12,6 +12,69 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Octopress + Google Analytics]]></title>
+    <link href="http://fukuishere.github.com/blog/2013/04/25/octopress-google-analytics/"/>
+    <updated>2013-04-25T23:47:00+09:00</updated>
+    <id>http://fukuishere.github.com/blog/2013/04/25/octopress-google-analytics</id>
+    <content type="html"><![CDATA[<p>OctopressにGoogleAnalyticsを仕込んでみた。</p>
+
+<p>合計３Step！</p>
+
+<p><strong>Step:1 トラッキングID取得</strong><br/>
+<strong>Step:2 トラッキングIDとドメインを設定</strong><br/>
+<strong>Step:3 headタグ内にドメインを追加</strong></p>
+
+<hr />
+
+<p><strong>Step:1 トラッキングID取得</strong></p>
+
+<p>いつものように
+<a href="http://www.google.co.jp/intl/ja/analytics/">Google Analytics</a>
+でトラッキングIDを取得</p>
+
+<p>ここで注意！！</p>
+
+<p>デフォルトのドメイン設定にしている場合、&#8221;com&#8221;なのか&#8221;io&#8221;なのか注意すること<br/>
+僕の場合は&#8221;io&#8221;<br/>
+ex)USERNAME.github.io<br/>
+（最初は&#8221;com&#8221;だったはず。。？）<br/>
+サイトURLは「USERNAME.github.io」で登録する。</p>
+
+<hr />
+
+<p><strong>Step:2 トラッキングIDとドメインを設定</strong></p>
+
+<figure class='code'><figcaption><span>_config.yml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># トラッキングIDは設定</span>
+</span><span class='line'><span class="n">google_analytics_tracking_id</span><span class="p">:</span> <span class="no">UA</span><span class="o">-</span><span class="no">XXXXXXXX</span><span class="o">-</span><span class="n">X</span>
+</span><span class='line'><span class="c1"># ドメインは追加</span>
+</span><span class='line'><span class="n">google_analytics_domain</span><span class="p">:</span> <span class="no">USERNAME</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">io</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<p><strong>Step:3 headタグ内にドメインを追加</strong></p>
+
+<figure class='code'><figcaption><span>/source/_includes/google_analytics.html</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">_gaq</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="o">[</span><span class="s1">&#39;_setDomainName&#39;</span><span class="p">,</span> <span class="s1">&#39;\{\{ site.google_analytics_domain \}\}&#39;</span><span class="o">]</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>注意:上記コードの&#8221;{&#8220;、 &#8220;}&#8221;の前のバックスラッシュは不要です。</em></p>
+
+<hr />
+
+<p><strong>これでイケましたね。</strong></p>
+
+<p><em>もしかしたらStep2,3のドメイン設定なくてもイケたかも。。</em></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[DeviseのTips]]></title>
