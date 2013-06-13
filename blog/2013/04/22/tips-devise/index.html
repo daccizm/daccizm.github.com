@@ -19,24 +19,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://fukuishere.github.com/blog/2013/04/22/tips-devise">
+  <link rel="canonical" href="http://fukuishere.github.com/blog/2013/04/22/tips-devise/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="Decimal Blue Note" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/ender.js"></script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Decimal Blue Note" type="application/atom+xml">
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic' rel='stylesheet' type='text/css'>
 
   
   <script type="text/javascript">
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-40149080-2']);
     _gaq.push(['_trackPageview']);
-    _gaq.push(['_setDomainName', 'fukuishere.github.io']);
 
     (function() {
       var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
@@ -51,13 +49,11 @@
 <body   >
   <header role="banner"><hgroup>
   <h1><a href="/">Decimal Blue Note</a></h1>
-  
-    <h2>Quality of Engineering Life</h2>
-  
 </hgroup>
 
 </header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <nav role="navigation"><!--
+<ul class="subscription" data-subscription="rss">
   <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
   
 </ul>
@@ -69,9 +65,12 @@
   </fieldset>
 </form>
   
+-->
 <ul class="main-navigation">
   <li><a href="/">Blog</a></li>
   <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/git">Git</a></li>
+  <li><a href="/blog/heroku">Heroku</a></li>
 </ul>
 
 </nav>
@@ -84,25 +83,16 @@
     
       <h1 class="entry-title">DeviseのTips</h1>
     
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-22T21:21:00+09:00" pubdate data-updated="true">2013/04/22</time>
-        
-      </p>
-    
   </header>
+
+
+
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/rails/'>Rails</a>
+  
+</span>
 
 
 <div class="entry-content"><hr />
@@ -226,15 +216,6 @@ skip_before_filter :authenticate_user!</p></blockquote>
 
 
 <time datetime="2013-04-22T21:21:00+09:00" pubdate data-updated="true">2013/04/22</time>
-      
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/rails/'>Rails</a>
-  
-</span>
-
-
     </p>
     
       <div class="sharing">
@@ -305,6 +286,10 @@ skip_before_filter :authenticate_user!</p></blockquote>
 
 
 
+<section>
+  <h1>Tag Cloud</h1>
+    <span id="tag-cloud"><a href='/blog/categories/gem' style='font-size: 140.0%'>gem(2)</a> <a href='/blog/categories/github' style='font-size: 140.0%'>Github(2)</a> <a href='/blog/categories/heroku' style='font-size: 120.0%'>Heroku(1)</a> <a href='/blog/categories/octopress' style='font-size: 140.0%'>octopress(2)</a> <a href='/blog/categories/rails' style='font-size: 160.0%'>Rails(3)</a> <a href='/blog/categories/rbenv' style='font-size: 140.0%'>rbenv(2)</a> <a href='/blog/categories/ruby' style='font-size: 140.0%'>Ruby(2)</a> </span>
+</section>
 
   
 </aside>
@@ -326,7 +311,7 @@ skip_before_filter :authenticate_user!</p></blockquote>
 <script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) {return;}
-  js = d.createElement(s); js.id = id; js.async = true;
+  js = d.createElement(s); js.id = id;
   js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
@@ -348,6 +333,9 @@ skip_before_filter :authenticate_user!</p></blockquote>
 
 
 
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/javascripts/aharris.js"></script>
 
 </body>
 </html>

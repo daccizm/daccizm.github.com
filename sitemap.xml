@@ -2,46 +2,54 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://fukuishere.github.com/blog/2013/03/23/install-octopress/</loc>
-        <lastmod>2013-03-23T19:07:17+09:00</lastmod>
+        <lastmod>2013-06-14T01:15:43+09:00</lastmod>
     </url>
     <url>
         <loc>http://fukuishere.github.com/blog/2013/03/23/gem-update/</loc>
-        <lastmod>2013-03-23T19:00:42+09:00</lastmod>
+        <lastmod>2013-06-14T01:15:43+09:00</lastmod>
     </url>
     <url>
         <loc>http://fukuishere.github.com/blog/2013/03/23/gem-unistall/</loc>
-        <lastmod>2013-03-23T19:00:14+09:00</lastmod>
+        <lastmod>2013-06-14T01:15:43+09:00</lastmod>
     </url>
     <url>
         <loc>http://fukuishere.github.com/blog/2013/03/23/meta-class-ext/</loc>
-        <lastmod>2013-03-23T18:59:43+09:00</lastmod>
+        <lastmod>2013-06-14T01:15:43+09:00</lastmod>
     </url>
     <url>
         <loc>http://fukuishere.github.com/blog/2013/03/23/meta-datetime-ext/</loc>
-        <lastmod>2013-03-23T21:31:29+09:00</lastmod>
+        <lastmod>2013-06-14T01:15:43+09:00</lastmod>
     </url>
     <url>
         <loc>http://fukuishere.github.com/blog/2013/03/23/create-rails/</loc>
-        <lastmod>2013-04-22T22:25:52+09:00</lastmod>
+        <lastmod>2013-06-14T01:15:43+09:00</lastmod>
     </url>
     <url>
         <loc>http://fukuishere.github.com/blog/2013/04/22/tips-devise/</loc>
-        <lastmod>2013-04-22T21:58:26+09:00</lastmod>
+        <lastmod>2013-06-14T01:15:43+09:00</lastmod>
     </url>
     <url>
         <loc>http://fukuishere.github.com/blog/2013/04/25/octopress-google-analytics/</loc>
-        <lastmod>2013-04-26T00:34:28+09:00</lastmod>
+        <lastmod>2013-06-14T01:15:43+09:00</lastmod>
     </url>
     <url>
         <loc>http://fukuishere.github.com/</loc>
-        <lastmod>2013-04-26T00:34:28+09:00</lastmod>
+        <lastmod>2013-06-14T01:15:43+09:00</lastmod>
     </url>
     <url>
         <loc>http://fukuishere.github.com/robots.txt</loc>
         <lastmod>2013-03-22T21:21:57+09:00</lastmod>
     </url>
     <url>
+        <loc>http://fukuishere.github.com/blog/git/</loc>
+        <lastmod>2013-06-14T01:15:43+09:00</lastmod>
+    </url>
+    <url>
+        <loc>http://fukuishere.github.com/blog/heroku/</loc>
+        <lastmod>2013-06-14T01:15:43+09:00</lastmod>
+    </url>
+    <url>
         <loc>http://fukuishere.github.com/blog/archives/</loc>
-        <lastmod>2013-04-26T00:34:28+09:00</lastmod>
+        <lastmod>2013-06-14T01:15:43+09:00</lastmod>
     </url>
 </urlset>
