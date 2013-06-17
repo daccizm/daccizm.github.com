@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Heroku | Decimal Blue Note]]></title>
-  <link href="http://fukuishere.github.com/blog/categories/heroku/atom.xml" rel="self"/>
+  <title><![CDATA[Category: GoogleAnalitycs | Decimal Blue Note]]></title>
+  <link href="http://fukuishere.github.com/blog/categories/googleanalitycs/atom.xml" rel="self"/>
   <link href="http://fukuishere.github.com/"/>
   <updated>2013-06-18T01:07:24+09:00</updated>
   <id>http://fukuishere.github.com/</id>
@@ -12,6 +12,71 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Octopress + Google Analytics]]></title>
+    <link href="http://fukuishere.github.com/blog/2013/04/25/octopress-google-analytics/"/>
+    <updated>2013-04-25T23:47:00+09:00</updated>
+    <id>http://fukuishere.github.com/blog/2013/04/25/octopress-google-analytics</id>
+    <content type="html"><![CDATA[<p>OctopressにGoogleAnalyticsを仕込んでみた。</p>
+
+<p>合計３Step！</p>
+
+<p><strong>Step:1 トラッキングID取得</strong><br/>
+<strong>Step:2 トラッキングIDとドメインを設定</strong><br/>
+<strong>Step:3 headタグ内にドメインを追加</strong></p>
+
+<hr />
+
+<p><strong>Step:1 トラッキングID取得</strong></p>
+
+<p>いつものように
+<a href="http://www.google.co.jp/intl/ja/analytics/">Google Analytics</a>
+でトラッキングIDを取得</p>
+
+<p>ここで注意！！</p>
+
+<p>デフォルトのドメイン設定にしている場合、"com"なのか"io"なのか注意すること<br/>
+僕の場合は"io"<br/>
+ex)USERNAME.github.io<br/>
+（最初は"com"だったはず。。？）<br/>
+サイトURLは「USERNAME.github.io」で登録する。</p>
+
+<hr />
+
+<p><strong>Step:2 トラッキングIDとドメインを設定</strong></p>
+
+<p>```ruby _config.yml</p>
+
+<h1>トラッキングIDは設定</h1>
+
+<p>google_analytics_tracking_id: UA-XXXXXXXX-X</p>
+
+<h1>ドメインは追加</h1>
+
+<p>google_analytics_domain: USERNAME.github.io
+```</p>
+
+<hr />
+
+<p><strong>Step:3 headタグ内にドメインを追加</strong></p>
+
+<p>```ruby /source/_includes/google_analytics.html</p>
+
+<pre><code>_gaq.push(['_setDomainName', '\{\{ site.google_analytics_domain \}\}']);
+</code></pre>
+
+<p>```</p>
+
+<p><em>注意:上記コードの"{"、 "}"の前のバックスラッシュは不要です。</em></p>
+
+<hr />
+
+<p><strong>これでイケましたね。</strong></p>
+
+<p><em>もしかしたらStep2,3のドメイン設定なくてもイケたかも。。</em></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Railsプロジェクト作成～Github～Herokuにデプロイ]]></title>

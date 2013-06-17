@@ -5,13 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>octopress + Github でブログを作ってみた - Decimal Blue Note</title>
+  <title>Category: GoogleAnalitycs - Decimal Blue Note</title>
   <meta name="author" content="fukuishhere">
 
   
-  <meta name="description" content="「GithubでBlog」という直感的好奇心から早速トライしてみることに。 導入難易度はEasyです。
-しかし、ハマった点がいくつか。 Githubのメールアドレスを確認していなかった
-Githubへの公開鍵登録 初歩的なハマりでしたorz 以下、サイトを参考にしました。 &hellip;">
+  <meta name="description" content="Category: GoogleAnalitycs">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +18,7 @@ Githubへの公開鍵登録 初歩的なハマりでしたorz 以下、サイト
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://fukuishere.github.com/blog/2013/03/23/install-octopress/">
+  <link rel="canonical" href="http://fukuishere.github.comblog/categories/googleanalitycs/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -78,179 +76,49 @@ Githubへの公開鍵登録 初歩的なハマりでしたorz 以下、サイト
   <div id="main">
     <div id="content">
       <div>
-<article class="hentry" role="article">
+<article role="article">
   
   <header>
-    
-      <h1 class="entry-title">Octopress + Github でブログを作ってみた</h1>
+    <h1 class="entry-title">Category: GoogleAnalitycs</h1>
     
   </header>
-
-
-
-
-<span class="categories">
   
-    <a class='category' href='/blog/categories/github/'>Github</a>, <a class='category' href='/blog/categories/octopress/'>octopress</a>
+  <div id="blog-archives" class="category">
+
+
+
   
-</span>
+  <h2>2013</h2>
+
+<article>
+  
+<h1><a href="/blog/2013/04/25/octopress-google-analytics/">Octopress + Google Analytics</a></h1>
+<time datetime="2013-04-25T23:47:00+09:00" pubdate><span class='month'>Apr</span> <span class='day'>25</span> <span class='year'>2013</span></time>
+
+<footer>
+  <span class="categories"><a class='category' href='/blog/categories/googleanalitycs/'>GoogleAnalitycs</a>, <a class='category' href='/blog/categories/octopress/'>octopress</a></span>
+</footer>
 
 
-<div class="entry-content"><p>「GithubでBlog」という直感的好奇心から早速トライしてみることに。</p>
-
-<p>導入難易度は<strong>Easy</strong>です。
-しかし、ハマった点がいくつか。</p>
-
-<ul>
-<li>Githubのメールアドレスを確認していなかった</li>
-<li>Githubへの公開鍵登録</li>
-</ul>
+</article>
 
 
-<p>初歩的なハマりでしたorz</p>
 
-<p>以下、サイトを参考にしました。</p>
+<article>
+  
+<h1><a href="/blog/2013/03/23/create-rails/">Railsプロジェクト作成～Github～Herokuにデプロイ</a></h1>
+<time datetime="2013-03-23T22:42:00+09:00" pubdate><span class='month'>Mar</span> <span class='day'>23</span> <span class='year'>2013</span></time>
 
-<blockquote><p><a href="http://blog.glidenote.com/blog/2011/11/07/install-octopress-on-github/">GithubとOctopressでモダンな技術系ブログを作ってみる</a><br/>
-<a href="http://www.sankitch.me/blog/2012/05/05/build-octopress-on-github-dropbox/">Octopress + Github Pages + Dropbox でブログを構築</a><br/>
-まだ試してないけど役立ちそうなサイト<br/>
-<a href="http://k-mats.github.com/blog/2013/03/04/blog-on-gibhub-2/">デザインや画像について</a><br/>
-<a href="http://tokkonopapa.github.com/blog/2011/12/30/octopress-on-github-and-bitbucket/">運用管理について</a><br/>
-<a href="http://www.miukoba.net/blog/2013/01/05/start-octopress/">テーマの変更、faviconの変更、コメント欄の追加</a></p></blockquote>
-
-<hr />
-
-<p>上記サイトと若干異なる点は、（恐らくただ省略されただけだが）<br/>
-gemのインストールはvendor/bundleにインスコ。</p>
-
-<pre><code>bundle install --path vendor/bundle
-</code></pre>
-
-<p>ということでrakeを実行するときは</p>
-
-<pre><code>bundle exec rake setup_github_pages
-bundle exec rake generate
-bundle exec rake deploy
-</code></pre>
-
-<hr />
-
-<p>新規記事の投稿</p>
-
-<pre><code>bundle exec rake new_post["new blog"]
-</code></pre>
-
-<p>markdown拡張子のファイルが以下に生成</p>
-
-<pre><code>source/_posts/2013-03-23-new-blog.markdown
-</code></pre>
-
-<p>ファイルを編集</p>
-
-<pre><code>---
-layout: post
-title: "new blog"
-date: 2013-03-23 10:17
-comments: true
-categories:
----
-投稿する内容を書く
-</code></pre>
-
-<p>記事を書いたら後はデプロイ</p>
-
-<pre><code>bundle exec rake gen_deploy
-</code></pre>
-
-<hr />
-
-<p>一応ハマった点について述べておく。</p>
-
-<ul>
-<li>Githubのメールアドレスを確認していなかった</li>
-</ul>
+<footer>
+  <span class="categories"><a class='category' href='/blog/categories/devise/'>Devise</a>, <a class='category' href='/blog/categories/github/'>Github</a>, <a class='category' href='/blog/categories/googleanalitycs/'>GoogleAnalitycs</a>, <a class='category' href='/blog/categories/heroku/'>Heroku</a>, <a class='category' href='/blog/categories/rails/'>Rails</a></span>
+</footer>
 
 
-<p>経緯問題が起きたときから解決まではこうだ。<br/>
-1.  参考サイトのとおりにデプロイまで実行<br/>
-2.  目安の１０分過ぎてもブログページがずっと４０４<br/>
-3.  Githubに登録しているメールを確認</p>
+</article>
 
-<blockquote><p>The page build failed with the following error:</p>
-
-<p>You need a verified email address in your GitHub account to publish Pages.<br/>
-You can verify your email addresses from your Settings panel:</p>
-
-<p>   <a href="https://github.com/settings/emails">https://github.com/settings/emails</a></p>
-
-<p>For information on troubleshooting Jekyll see <a href="https://help.github.com/articles/using-jekyll-with-pages#troubleshooting">https://help.github.com/articles/using-jekyll-with-pages#troubleshooting</a><br/>
-If you have any questions please contact GitHub Support.</p>
-
-<p>support@github.com<br/>
-https://github.com/contact</p></blockquote>
-
-<p><strong>GithubPageを利用するときは登録済みメールアドレスを確認しておく必要があった！！</strong><br/>
-4.  Githubに登録しているメールを確認<br/>
-5.  再度デプロイして正常にブログが表示されたことを確認</p>
-
-<ul>
-<li>Githubへの公開鍵登録</li>
-</ul>
-
-
-<p>sshでgit pushするときにエラーが出たので対処<br/>
-公開鍵を確認</p>
-
-<pre><code>cat ~/.ssh/id_rsa.pub
-</code></pre>
-
-<p><a href="https://github.com/settings/ssh">https://github.com/settings/ssh</a>
-から公開鍵を登録<br/>
-Title: (任意)<br/>
-Key: (example)ssh-rsa AA&#8230;.</p>
 </div>
 
-
-  <footer>
-    <p class="meta">
-      
   
-
-<span class="byline author vcard">Posted by <span class="fn">fukuishhere</span></span>
-
-      
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-23T10:40:00+09:00" pubdate data-updated="true">2013/03/23</time>
-    </p>
-    
-      <div class="sharing">
-  
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://fukuishere.github.com/blog/2013/03/23/install-octopress/" data-via="" data-counturl="http://fukuishere.github.com/blog/2013/03/23/install-octopress/" >Tweet</a>
-  
-  
-  
-    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
-  
-</div>
-
-    
-    <p class="meta">
-      
-      
-        <a class="basic-alignment right" href="/blog/2013/03/23/gem-update/" title="Next Post: rbenv環境でgemのupdateしてみた">rbenv環境でgemのupdateしてみた &raquo;</a>
-      
-    </p>
-  </footer>
 </article>
 
 </div>

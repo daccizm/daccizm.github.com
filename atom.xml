@@ -3,7 +3,7 @@
   <title><![CDATA[Decimal Blue Note]]></title>
   <link href="http://fukuishere.github.com/atom.xml" rel="self"/>
   <link href="http://fukuishere.github.com/"/>
-  <updated>2013-06-14T01:59:04+09:00</updated>
+  <updated>2013-06-18T01:07:24+09:00</updated>
   <id>http://fukuishere.github.com/</id>
   <author>
     <name><![CDATA[fukuishhere]]></name>
@@ -11,6 +11,116 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[devise + twitter]]></title>
+    <link href="http://fukuishere.github.com/blog/2013/06/18/devise-twitter/"/>
+    <updated>2013-06-18T00:22:00+09:00</updated>
+    <id>http://fukuishere.github.com/blog/2013/06/18/devise-twitter</id>
+    <content type="html"><![CDATA[<pre><code>編集中で～す。2013/06/20までには完了します。
+</code></pre>
+
+<p>Twitterでログインしてみた。</p>
+
+<p>もちろんDevise+TwitterのOAuth認証で。</p>
+
+<p>恐らくこれが主流だと思われ。</p>
+
+<p>合計9Step！</p>
+
+<p><strong>Step:1 Gemfile編集</strong><br/>
+<strong>Step:2 Deviseのインストール</strong><br/>
+<strong>Step:3 migrationの編集</strong><br/>
+<strong>Step:4 developerサイトに登録</strong><br/>
+<strong>Step:5 deviseのconfig編集</strong><br/>
+<strong>Step:6 Modelの編集</strong><br/>
+<strong>Step:7 Controllerの作成と編集</strong><br/>
+<strong>Step:8 routeの編集</strong><br/>
+<strong>Step:9 viewの編集</strong></p>
+
+<p>あとdb:migrateしてみればOK！</p>
+
+<hr />
+
+<p><strong>Step:1 Gemfile編集</strong></p>
+
+<figure class='code'><figcaption><span>Gemfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># この２つを追加</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;devise&#39;</span>
+</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;omniauth-twitter&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<p><strong>Step:2 Deviseのインストール</strong></p>
+
+<p>今回は認証用のModel名を&#8221;User&#8221;にしてみた。</p>
+
+<pre><code>$bundle install --path vendor/bundle
+
+$bundle exec rails g devise:install  
+$bundle exec rails g devise user  
+</code></pre>
+
+<hr />
+
+<p><strong>Step:3 migrationの編集</strong></p>
+
+<p>Trackableはお好みで。<br/>
+あってもなくてもどっちでもOK。<br/>
+GoogleAnalitycs入れてたらいらないかも。</p>
+
+<p>今回emailとかの必要ないカラムは消してみた。</p>
+
+<figure class='code'><figcaption><span>YYYYmmddHHMMSS_devise_create_users.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">DeviseCreateUsers</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Migration</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">change</span>
+</span><span class='line'>    <span class="n">create_table</span><span class="p">(</span><span class="ss">:users</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="c1">## Trackable</span>
+</span><span class='line'>      <span class="n">t</span><span class="o">.</span><span class="n">integer</span>  <span class="ss">:sign_in_count</span><span class="p">,</span> <span class="ss">:default</span> <span class="o">=&gt;</span> <span class="mi">0</span>
+</span><span class='line'>      <span class="n">t</span><span class="o">.</span><span class="n">datetime</span> <span class="ss">:current_sign_in_at</span>
+</span><span class='line'>      <span class="n">t</span><span class="o">.</span><span class="n">datetime</span> <span class="ss">:last_sign_in_at</span>
+</span><span class='line'>      <span class="n">t</span><span class="o">.</span><span class="n">string</span>   <span class="ss">:current_sign_in_ip</span>
+</span><span class='line'>      <span class="n">t</span><span class="o">.</span><span class="n">string</span>   <span class="ss">:last_sign_in_ip</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="c1">##Omniauthable</span>
+</span><span class='line'>      <span class="n">t</span><span class="o">.</span><span class="n">string</span> <span class="ss">:uid</span>
+</span><span class='line'>      <span class="n">t</span><span class="o">.</span><span class="n">string</span> <span class="ss">:name</span>
+</span><span class='line'>      <span class="n">t</span><span class="o">.</span><span class="n">string</span> <span class="ss">:provider</span>
+</span><span class='line'>      <span class="n">t</span><span class="o">.</span><span class="n">string</span> <span class="ss">:password</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">t</span><span class="o">.</span><span class="n">timestamps</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="n">add_index</span> <span class="ss">:users</span><span class="p">,</span> <span class="ss">:uid</span><span class="p">,</span>  <span class="ss">:unique</span> <span class="o">=&gt;</span> <span class="kp">true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Octopress + Google Analytics]]></title>

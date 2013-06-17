@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Heroku | Decimal Blue Note]]></title>
-  <link href="http://fukuishere.github.com/blog/categories/heroku/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Devise | Decimal Blue Note]]></title>
+  <link href="http://fukuishere.github.com/blog/categories/devise/atom.xml" rel="self"/>
   <link href="http://fukuishere.github.com/"/>
   <updated>2013-06-18T01:07:24+09:00</updated>
   <id>http://fukuishere.github.com/</id>
@@ -12,6 +12,193 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[devise + twitter]]></title>
+    <link href="http://fukuishere.github.com/blog/2013/06/18/devise-twitter/"/>
+    <updated>2013-06-18T00:22:00+09:00</updated>
+    <id>http://fukuishere.github.com/blog/2013/06/18/devise-twitter</id>
+    <content type="html"><![CDATA[<pre><code>編集中で～す。2013/06/20までには完了します。
+</code></pre>
+
+<p>Twitterでログインしてみた。</p>
+
+<p>もちろんDevise+TwitterのOAuth認証で。</p>
+
+<p>恐らくこれが主流だと思われ。</p>
+
+<p>合計9Step！</p>
+
+<p><strong>Step:1 Gemfile編集</strong><br/>
+<strong>Step:2 Deviseのインストール</strong><br/>
+<strong>Step:3 migrationの編集</strong><br/>
+<strong>Step:4 developerサイトに登録</strong><br/>
+<strong>Step:5 deviseのconfig編集</strong><br/>
+<strong>Step:6 Modelの編集</strong><br/>
+<strong>Step:7 Controllerの作成と編集</strong><br/>
+<strong>Step:8 routeの編集</strong><br/>
+<strong>Step:9 viewの編集</strong></p>
+
+<p>あとdb:migrateしてみればOK！</p>
+
+<hr />
+
+<p><strong>Step:1 Gemfile編集</strong></p>
+
+<p>```ruby Gemfile</p>
+
+<h1>この２つを追加</h1>
+
+<p>gem 'devise'
+gem 'omniauth-twitter'</p>
+
+<p>```</p>
+
+<hr />
+
+<p><strong>Step:2 Deviseのインストール</strong></p>
+
+<p>今回は認証用のModel名を"User"にしてみた。</p>
+
+<pre><code>$bundle install --path vendor/bundle
+
+$bundle exec rails g devise:install  
+$bundle exec rails g devise user  
+</code></pre>
+
+<hr />
+
+<p><strong>Step:3 migrationの編集</strong></p>
+
+<p>Trackableはお好みで。<br/>
+あってもなくてもどっちでもOK。<br/>
+GoogleAnalitycs入れてたらいらないかも。</p>
+
+<p>今回emailとかの必要ないカラムは消してみた。</p>
+
+<p>```ruby YYYYmmddHHMMSS_devise_create_users.rb</p>
+
+<p>class DeviseCreateUsers &lt; ActiveRecord::Migration
+  def change</p>
+
+<pre><code>create_table(:users) do |t|
+
+  ## Trackable
+  t.integer  :sign_in_count, :default =&gt; 0
+  t.datetime :current_sign_in_at
+  t.datetime :last_sign_in_at
+  t.string   :current_sign_in_ip
+  t.string   :last_sign_in_ip
+
+  ##Omniauthable
+  t.string :uid
+  t.string :name
+  t.string :provider
+  t.string :password
+
+  t.timestamps
+end
+add_index :users, :uid,  :unique =&gt; true
+</code></pre>
+
+<p>```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[DeviseのTips]]></title>
+    <link href="http://fukuishere.github.com/blog/2013/04/22/tips-devise/"/>
+    <updated>2013-04-22T21:21:00+09:00</updated>
+    <id>http://fukuishere.github.com/blog/2013/04/22/tips-devise</id>
+    <content type="html"><![CDATA[<hr />
+
+<ul>
+<li>DeviseでE-Mailを使わない</li>
+</ul>
+
+
+<p>migrateで"email"のカラムを消してみる。<br/>
+理由は分からないけど上手くいかなかった。orz</p>
+
+<p>ということで、emailをただのカラムとして再定義してみる。</p>
+
+<p>コレは消してもOK。</p>
+
+<blockquote><p>:null => false, :default => ""</p></blockquote>
+
+<p>コレも消してもOK。</p>
+
+<blockquote><p>add index :users, :email, :unique => true</p></blockquote>
+
+<p>後はModelにメソッドをオーバーライド。</p>
+
+<p><code>ruby user.rb
+def email_required?
+  false
+end
+</code></p>
+
+<p>emailの代わりのカラムを指定（ex: account）</p>
+
+<blockquote><p>add index :users, :account, :unique => true</p></blockquote>
+
+<p>仕上げにdevise.rbを変更。</p>
+
+<p>```ruby config/initializers/devise.rb
+  # コメントを解除してaccountに変更
+  config.authentication_keys = [ :account ]</p>
+
+<p>  # 大文字小文字を区別させない。登録時に問答無用で小文字で登録される。
+  config.case_insensitive_keys = [ :account ]</p>
+
+<p>  # コメント見る限り余白を取り除くものだと。。思ふ。。
+  config.strip_whitespace_keys = [ :account ]
+```</p>
+
+<p>これがemailを使わないdeviseのやり方。。だと思う！</p>
+
+<hr />
+
+<ul>
+<li>Deviseによるユーザー認証機能の日本語化</li>
+</ul>
+
+
+<p>以下、サイトを参考にしました。
+<a href="http://www.oiax.jp/rails/rails3/i18n_and_devise1.html">http://www.oiax.jp/rails/rails3/i18n_and_devise1.html</a></p>
+
+<p>これ忘れずに！</p>
+
+<blockquote><p>config.i18n.default_locale = :ja</p></blockquote>
+
+<hr />
+
+<ul>
+<li>Deviseの認証フィルタリング</li>
+</ul>
+
+
+<p>以下、サイトを参考にしました。
+<a href="http://www.slideshare.net/fukajun/minamirbdevise">http://www.slideshare.net/fukajun/minamirbdevise</a></p>
+
+<p>なんてことはない話ですね。</p>
+
+<blockquote><p>before_filter :authenticate_user!<br/>
+skip_before_filter :authenticate_user!</p></blockquote>
+
+<hr />
+
+<ul>
+<li>Deviseのsignin,signoutのrouteの変え方</li>
+</ul>
+
+
+<p>以下、サイトを参考にしました。
+<a href="https://github.com/plataformatec/devise/wiki/How-To:-Change-the-default-sign_in-and-sign_out-routes">https://github.com/plataformatec/devise/wiki/How-To:-Change-the-default-sign_in-and-sign_out-routes</a></p>
+
+<p>まだ試してないけど、そのうちやってみようかな。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Railsプロジェクト作成～Github～Herokuにデプロイ]]></title>

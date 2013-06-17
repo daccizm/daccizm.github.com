@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: TwitterAPI | Decimal Blue Note]]></title>
+  <link href="http://fukuishere.github.com/blog/categories/twitterapi/atom.xml" rel="self"/>
+  <link href="http://fukuishere.github.com/"/>
+  <updated>2013-06-18T01:07:24+09:00</updated>
+  <id>http://fukuishere.github.com/</id>
+  <author>
+    <name><![CDATA[fukuishhere]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[devise + twitter]]></title>
+    <link href="http://fukuishere.github.com/blog/2013/06/18/devise-twitter/"/>
+    <updated>2013-06-18T00:22:00+09:00</updated>
+    <id>http://fukuishere.github.com/blog/2013/06/18/devise-twitter</id>
+    <content type="html"><![CDATA[<pre><code>編集中で～す。2013/06/20までには完了します。
+</code></pre>
+
+<p>Twitterでログインしてみた。</p>
+
+<p>もちろんDevise+TwitterのOAuth認証で。</p>
+
+<p>恐らくこれが主流だと思われ。</p>
+
+<p>合計9Step！</p>
+
+<p><strong>Step:1 Gemfile編集</strong><br/>
+<strong>Step:2 Deviseのインストール</strong><br/>
+<strong>Step:3 migrationの編集</strong><br/>
+<strong>Step:4 developerサイトに登録</strong><br/>
+<strong>Step:5 deviseのconfig編集</strong><br/>
+<strong>Step:6 Modelの編集</strong><br/>
+<strong>Step:7 Controllerの作成と編集</strong><br/>
+<strong>Step:8 routeの編集</strong><br/>
+<strong>Step:9 viewの編集</strong></p>
+
+<p>あとdb:migrateしてみればOK！</p>
+
+<hr />
+
+<p><strong>Step:1 Gemfile編集</strong></p>
+
+<p>```ruby Gemfile</p>
+
+<h1>この２つを追加</h1>
+
+<p>gem 'devise'
+gem 'omniauth-twitter'</p>
+
+<p>```</p>
+
+<hr />
+
+<p><strong>Step:2 Deviseのインストール</strong></p>
+
+<p>今回は認証用のModel名を"User"にしてみた。</p>
+
+<pre><code>$bundle install --path vendor/bundle
+
+$bundle exec rails g devise:install  
+$bundle exec rails g devise user  
+</code></pre>
+
+<hr />
+
+<p><strong>Step:3 migrationの編集</strong></p>
+
+<p>Trackableはお好みで。<br/>
+あってもなくてもどっちでもOK。<br/>
+GoogleAnalitycs入れてたらいらないかも。</p>
+
+<p>今回emailとかの必要ないカラムは消してみた。</p>
+
+<p>```ruby YYYYmmddHHMMSS_devise_create_users.rb</p>
+
+<p>class DeviseCreateUsers &lt; ActiveRecord::Migration
+  def change</p>
+
+<pre><code>create_table(:users) do |t|
+
+  ## Trackable
+  t.integer  :sign_in_count, :default =&gt; 0
+  t.datetime :current_sign_in_at
+  t.datetime :last_sign_in_at
+  t.string   :current_sign_in_ip
+  t.string   :last_sign_in_ip
+
+  ##Omniauthable
+  t.string :uid
+  t.string :name
+  t.string :provider
+  t.string :password
+
+  t.timestamps
+end
+add_index :users, :uid,  :unique =&gt; true
+</code></pre>
+
+<p>```</p>
+]]></content>
+  </entry>
+  
+</feed>
